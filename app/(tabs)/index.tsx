@@ -1,16 +1,17 @@
 import { Stack } from 'expo-router';
-
 import { StyleSheet, View } from 'react-native';
+import { ContainerImg } from '~/components/container';
+import { Home } from '~/components/page/tab/home';
 
-import { ScreenContent } from '~/components/ScreenContent';
-
-export default function Home() {
+export default function Index() {
   return (
     <>
-      <Stack.Screen options={{ title: 'Tab One' }} />
-      <View style={styles.container}>
-        <ScreenContent path="app/(tabs)/index.tsx" title="Tab One" />
-      </View>
+      <Stack.Screen options={{ title: 'Home' }} />
+      <ContainerImg>
+        <View style={styles.container}>
+          <Home />
+        </View>
+      </ContainerImg>
     </>
   );
 }
@@ -18,6 +19,8 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
+    padding: 20,
+    paddingVertical: 50,
+    backgroundColor: 'transparent',
   },
 });
