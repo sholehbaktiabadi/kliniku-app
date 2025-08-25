@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Button, Alert } from 'react-native';
+import { View, Text, Button, Alert, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { isValidNumber, MASK_PER_COUNTRY, PhoneInput } from 'react-native-phone-entry';
@@ -12,14 +12,14 @@ export default function SentOtp() {
     const handleLogin = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://192.168.49.1:3009/auth/sent-otp', {
+            const response = await fetch(process.env.EXPO_PUBLIC_KLINIKU_API_URL + '/auth/sent-otp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ phone }),
             });
-
+            console.log(response.json())
             if (response.ok) {
                 router.push({
                     pathname: '/login',
@@ -61,6 +61,9 @@ export default function SentOtp() {
                         callingCode: '+62',
                         phoneNumber: '+62',
                     }}
+                    countryPickerProps={{ disableNativeModal: true, countryCode: "ID", onSelect: (() => console.log()) }}
+                    isCallingCodeEditable={true}
+                    hideDropdownIcon={true}
                     maskInputProps={{ mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/] }}
                     onChangeText={(text) => {
                         console.log(
@@ -70,18 +73,12 @@ export default function SentOtp() {
                         setPhone(text)
                     }
                     }
-                    onChangeCountry={(country) => {
-                        console.log('Country:', country);
-                        console.log('countryCode:', countryCode);
-                        setCountryCode(country.cca2);
-                    }}
                 />
-
-                <Button
-                    title={loading ? "Sending..." : "Send Otp"}
-                    onPress={handleLogin}
-                    disabled={loading}
-                />
+                <Pressable
+                    className="mt-5 items-center rounded-xl border border-indigo-400 bg-indigo-400 shadow shadow-slate-700"
+                    onPress={async () => await handleLogin()}>
+                    <Text className="m-3 font-bold text-white">{loading ? "Mengirim..." : "Kirim Otp"}</Text>
+                </Pressable>
 
             </View>
         </>

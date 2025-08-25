@@ -4,19 +4,17 @@ import { SimpleGrid } from 'react-native-super-grid';
 export const MainMenu = () => {
   return (
     <>
-      <View className="mt-5 p-5 justify-center">
         <SimpleGrid
           listKey=""
           data={mainMenu}
           itemDimension={60}
           renderItem={({ item }) => (
-            <View className="p-2 items-center bg-gray-200 rounded-xl">
-              <Image source={require('../assets/favicon.png')} style={{ width: 40, height: 40 }} />
+            <View className="p-2 items-center bg-white rounded-xl shadow-lg shadow-violet-500/50 border border-violet-200">
+              <Image source={require('../assets/favicon.png')} style={{ width: 30, height: 30 }} />
               <Text className="text-xs text-slate-500">{item}</Text>
             </View>
           )}
         />
-      </View>
     </>
   );
 };

@@ -13,7 +13,7 @@ export default function Login() {
   const handleLogin = async (otp: string) => {
     setLoading(true);
     try {
-      const response = await fetch('http://192.168.49.1:3009/auth/login', {
+      const response = await fetch(process.env.EXPO_PUBLIC_KLINIKU_API_URL + '/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,33 +41,30 @@ export default function Login() {
       <View
         style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
         <Text style={{ fontSize: 24, marginBottom: 20, textAlign: 'center' }}>
-          Login
+          Masukan Kode Otp
         </Text>
         <View style={{ alignItems: "center" }}>
           <LottieView
             autoPlay
-            speed={2}
+            speed={0.5}
             style={{
               width: 400,
               height: 200
             }}
-            source={require("../assets/lottie/verification.json")}
+            source={require("../assets/lottie/otp-verification.json")}
           />
+          <View className='mx-[10%]'>
           <OtpInput
             numberOfDigits={4}
             disabled={loading}
             onTextChange={(text) => console.log(text)}
             focusColor="gray"
-            textProps={{
-              accessibilityRole: "text",
-              accessibilityLabel: "OTP digit",
-              allowFontScaling: false,
-            }}
             onFilled={(text) => {
               handleLogin(text)
             }}
 
           />
+          </View>
         </View>
       </View>
     </>

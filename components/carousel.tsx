@@ -7,6 +7,7 @@ export const ImageCarousel = ({ images }: { images: string[] }) => {
   return (
     <View className="items-center">
     <Carousel
+      style={{borderRadius: 10}}
       loop
       width={width / 1.1}
       height={width / 2}

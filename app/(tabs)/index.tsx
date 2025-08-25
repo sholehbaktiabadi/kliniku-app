@@ -1,26 +1,25 @@
 import { Stack } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
-import { ContainerImg } from '~/components/container';
-import { Home } from '~/components/page/tab/home';
+import { ScrollView, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { HomeScreen } from '~/components/page/tab/home';
 
 export default function Index() {
   return (
     <>
       <Stack.Screen options={{ title: 'Home' }} />
-      <ContainerImg>
-        <View style={styles.container}>
-          <Home />
-        </View>
-      </ContainerImg>
+      <ScrollView>
+        <LinearGradient
+          colors={['#5e3affff', '#a292ffff', '#dcdcffff', '#ffffffff']}
+          locations={[0.05, 0.29, 0.3, 1]}
+          style={{ minHeight: '100%' }} // This makes it expand to full height
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+        >
+          <View className="px-5 py-12">
+            <HomeScreen />
+          </View>
+        </LinearGradient>
+      </ScrollView>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    paddingVertical: 50,
-    backgroundColor: 'transparent',
-  },
-});

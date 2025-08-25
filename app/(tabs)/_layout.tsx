@@ -7,14 +7,14 @@ export default function TabLayout() {
     <ProtectedRoute>
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: 'black'
+        tabBarActiveTintColor: '#ae9fffff'
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Homes',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({  }) => <TabBarIcon name="home" color={"#ae9fffff"} />,
         }}
       />
       <Tabs.Screen
@@ -22,7 +22,7 @@ export default function TabLayout() {
         options={{
           title: 'Booking',
           headerShown: false,
-          tabBarIcon: ({ color }) => <TabBarIcon name="book" color={color} />,
+          tabBarIcon: ({  }) => <TabBarIcon name="book" color={"#ae9fffff"} />,
         }}
       />
       <Tabs.Screen
@@ -30,7 +30,7 @@ export default function TabLayout() {
         options={{
           title: 'User',
           headerShown: true,
-          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          tabBarIcon: ({  }) => <TabBarIcon name="user" color={"#ae9fffff"} />,
         }}
       />
     </Tabs>
