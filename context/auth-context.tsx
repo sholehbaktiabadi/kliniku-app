@@ -6,6 +6,7 @@ interface AuthContextType {
   login: (token: string) => Promise<void>;
   logout: () => Promise<void>;
   isLoading: boolean;
+  session: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -13,6 +14,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [session, setSession] = useState<string | null>(null);
 
   useEffect(() => {
     checkAuthStatus();
@@ -22,9 +24,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const token = await SecureStore.getItemAsync('token');
       setIsAuthenticated(!!token);
+      setSession(token);
     } catch (error) {
       console.error('Auth check error:', error);
       setIsAuthenticated(false);
+      setSession(null);
     } finally {
       setIsLoading(false);
     }
@@ -34,6 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await SecureStore.setItemAsync('token', token);
       setIsAuthenticated(true);
+      setSession(token)
     } catch (error) {
       console.error('Login error:', error);
     }
@@ -43,13 +48,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await SecureStore.deleteItemAsync('token');
       setIsAuthenticated(false);
+      setSession(null)
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, isLoading, session }}>
       {children}
     </AuthContext.Provider>
   );

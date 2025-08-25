@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import { View, Text, Button, Alert, Pressable } from 'react-native';
+import { View, Text, Alert, Pressable } from 'react-native';
 import { router } from 'expo-router';
 import LottieView from 'lottie-react-native';
-import { isValidNumber, MASK_PER_COUNTRY, PhoneInput } from 'react-native-phone-entry';
+import { isValidNumber, PhoneInput } from 'react-native-phone-entry';
+import { LinearGradient } from 'expo-linear-gradient';
+import { env } from '~/config/env';
 
 export default function SentOtp() {
     const [phone, setPhone] = useState('');
     const [loading, setLoading] = useState(false);
-    const [countryCode, setCountryCode] = useState('');
 
     const handleLogin = async () => {
         setLoading(true);
         try {
-            const response = await fetch(process.env.EXPO_PUBLIC_KLINIKU_API_URL + '/auth/sent-otp', {
+            const response = await fetch(env.baseUrl.klinikuApi + '/auth/sent-otp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,23 +39,26 @@ export default function SentOtp() {
 
     return (
         <>
-            <View
-                style={{ flex: 1, justifyContent: 'center', padding: 20 }}>
-                <Text style={{ fontSize: 24, marginBottom: 20, textAlign: 'center' }}>
-                    Sent Otp
+        <LinearGradient
+          colors={['#ff792cff', '#ffb387ff', '#ffcaabff', '#ffeee5ff']}
+          locations={[0.1, 0.39, 0.4, 1]}
+          className="absolute top-0 left-0 right-0 bottom-0"
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+        >
+            <View style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
+                <Text className='text-gray-100 mb-20 text-center text-3xl font-sans'>
+                    Kirim Kode OTP
                 </Text>
-                <View style={{ alignItems: "center" }}>
-                    <LottieView
-                        autoPlay
-                        speed={2}
-                        style={{
-                            width: 400,
-                            height: 200
-                        }}
-                        source={require("../assets/lottie/verification.json")}
-                    />
-
-                </View>
+                <LottieView
+                    autoPlay
+                    speed={2}
+                    style={{
+                        width: 340,
+                        height: 150
+                    }}
+                    source={require("../assets/lottie/verification.json")}
+                />
                 <PhoneInput
                     defaultValues={{
                         countryCode: 'ID',
@@ -68,19 +72,21 @@ export default function SentOtp() {
                     onChangeText={(text) => {
                         console.log(
                             'isValidNumber:',
-                            isValidNumber(text, countryCode),
+                            isValidNumber(text, "ID"),
                         )
                         setPhone(text)
                     }
                     }
                 />
-                <Pressable
-                    className="mt-5 items-center rounded-xl border border-indigo-400 bg-indigo-400 shadow shadow-slate-700"
-                    onPress={async () => await handleLogin()}>
-                    <Text className="m-3 font-bold text-white">{loading ? "Mengirim..." : "Kirim Otp"}</Text>
-                </Pressable>
-
+                <View className="items-center">
+                    <Pressable
+                        className="mt-5 items-center rounded-xl border border-orange-400 bg-orange-400 shadow shadow-slate-700 w-[70%]"
+                        onPress={async () => await handleLogin()}>
+                        <Text className="m-3 font-bold text-white">{loading ? "Mengirim..." : "Kirim Otp"}</Text>
+                    </Pressable>
+                </View>
             </View>
+            </LinearGradient>
         </>
     );
 }

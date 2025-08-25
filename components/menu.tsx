@@ -9,7 +9,7 @@ export const MainMenu = () => {
           data={mainMenu}
           itemDimension={60}
           renderItem={({ item }) => (
-            <View className="p-2 items-center bg-white rounded-xl shadow-lg shadow-violet-500/50 border border-violet-200">
+            <View className="p-2 items-center bg-white rounded-xl shadow">
               <Image source={require('../assets/favicon.png')} style={{ width: 30, height: 30 }} />
               <Text className="text-xs text-slate-500">{item}</Text>
             </View>
