@@ -1,16 +1,12 @@
 import '../global.css'
-import { Stack } from 'expo-router';
-import { AuthProvider } from '~/context/auth-context';
+import { SessionProvider } from '~/middleware/middleware';
+import { Slot } from 'expo-router';
 
-export default function RootLayout() {
+export default function Root() {
+  // Set up the auth context and render our layout inside of it.
   return (
-    <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" options={{ title: 'Index' }} />
-        <Stack.Screen name="sent-otp" options={{ title: 'SentOtp' }} />
-        <Stack.Screen name="login" options={{ title: 'Login' }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      </Stack>
-    </AuthProvider>
+    <SessionProvider>
+      <Slot />
+    </SessionProvider>
   );
 }

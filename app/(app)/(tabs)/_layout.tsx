@@ -1,10 +1,8 @@
 import { Tabs } from 'expo-router';
-import { TabBarIcon } from '../../components/tabbar-icon';
-import ProtectedRoute from '~/components/protected-route';
+import { TabBarIcon } from '../../../components/tabbar-icon';
 
 export default function TabLayout() {
   return (
-    <ProtectedRoute>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#ffb387ff'
@@ -21,7 +19,7 @@ export default function TabLayout() {
         name="booking"
         options={{
           title: 'Booking',
-          headerShown: false,
+          headerShown: true,
           tabBarIcon: ({  }) => <TabBarIcon name="book" color={"#ffb387ff"} />,
         }}
       />
@@ -34,6 +32,5 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
-    </ProtectedRoute>
   );
 }

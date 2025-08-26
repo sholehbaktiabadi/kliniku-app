@@ -1,36 +1,23 @@
 import { useState } from 'react';
 import { View, Text, Alert, Pressable } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useAuth } from '~/context/auth-context';
 import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
 import { LinearGradient } from 'expo-linear-gradient';
-import { env } from '~/config/env';
+import { useSession } from '~/middleware/middleware';
 
 export default function Login() {
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth()
+  const { signIn } = useSession()
   const { phone } = useLocalSearchParams();
 
   const handleLogin = async (otp: string) => {
-    setLoading(true);
     try {
-      const response = await fetch(env.baseUrl.klinikuApi + '/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ phone, otp }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        login(data.message.token)
-        router.replace('/(tabs)');
-      } else {
-        Alert.alert('Error', 'Invalid credentials');
-      }
+      setLoading(true);
+      signIn(phone as string, otp)
+      router.replace("/(app)/(tabs)");
     } catch (error) {
+      router.replace('/');
       console.log(error)
       Alert.alert('Error', 'Login failed');
     } finally {

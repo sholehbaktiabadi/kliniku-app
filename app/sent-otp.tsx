@@ -20,7 +20,6 @@ export default function SentOtp() {
                 },
                 body: JSON.stringify({ phone }),
             });
-            console.log(response.json())
             if (response.ok) {
                 router.push({
                     pathname: '/login',
