@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, Alert, Pressable } from 'react-native';
+import { View, Text, Alert, Pressable,Image } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
@@ -40,10 +40,13 @@ export default function Login() {
       >
         <View
           style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-          <Text className='text-white mb-20 text-center text-3xl font-sans'>
-            Masukan Kode Otp
-          </Text>
-          <View className='items-center'>
+                    <Text className='text-white mb-1 text-3xl font-sans font-extrabold'>
+                        Masukan Kode OTP
+                    </Text>
+                    <Text className='text-gray-100 mb-5 font-sans font-extrabold'>
+                        Anda akan diarahkan ke halaman home
+                    </Text>
+          <View className='items-center mb-4'>
             <LottieView
               autoPlay
               speed={0.5}
