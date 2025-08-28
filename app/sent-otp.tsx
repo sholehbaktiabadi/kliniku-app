@@ -1,43 +1,29 @@
 import { useState } from 'react';
-import { View, Text, Alert, Pressable, Image } from 'react-native';
+import { View, Text, Pressable, Image, Alert } from 'react-native';
 import { router } from 'expo-router';
-import LottieView from 'lottie-react-native';
 import { isValidNumber, PhoneInput } from 'react-native-phone-entry';
 import { LinearGradient } from 'expo-linear-gradient';
-import { env } from '~/config/env';
+import { useMutation } from "@tanstack/react-query";
+import { sentOtp } from '~/api/auth';
 
 export default function SentOtp() {
     const [phone, setPhone] = useState('');
-    const [loading, setLoading] = useState(false);
-
-    const handleLogin = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch(env.baseUrl.klinikuApi + '/auth/sent-otp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ phone }),
+    const mutation = useMutation({
+        mutationFn: sentOtp,
+        onSuccess: (_data) => {
+            router.push({
+                pathname: '/login',
+                params: { phone },
             });
-            if (response.ok) {
-                router.push({
-                    pathname: '/login',
-                    params: { phone },
-                });
-            } else {
-                Alert.alert('Error', 'Bad Request');
-            }
-        } catch (error) {
-            console.log(error)
+        },
+        onError: (_error) => {
             Alert.alert('Error', 'Login failed');
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+    });
 
     return (
         <>
+
             <LinearGradient
                 colors={['#ff792cff', '#ffb387ff', '#ffcaabff', '#ffeee5ff']}
                 locations={[0.1, 0.39, 0.4, 1]}
@@ -68,22 +54,27 @@ export default function SentOtp() {
                         isCallingCodeEditable={true}
                         hideDropdownIcon={true}
                         maskInputProps={{ mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/] }}
-                        onChangeText={(text) => {
+                        onChangeText={(phone) => {
                             console.log(
                                 'isValidNumber:',
-                                isValidNumber(text, "ID"),
+                                isValidNumber(phone, "ID"),
                             )
-                            setPhone(text)
+                            setPhone(phone)
                         }
                         }
                     />
                     <View className="items-center">
                         <Pressable
                             className="mt-5 items-center rounded-xl border border-orange-400 bg-orange-400 shadow shadow-slate-700 w-[70%]"
-                            onPress={async () => await handleLogin()}>
-                            <Text className="m-3 font-bold text-white">{loading ? "Mengirim..." : "Kirim Otp"}</Text>
+                            onPress={async () => mutation.mutate({ phone })}>
+                            <Text className="m-3 font-bold text-white">{mutation.isPending ? "Mengirim..." : "Kirim Otp"}</Text>
                         </Pressable>
                     </View>
+                </View>
+                <View className="absolute bottom-0 w-full py-4">
+                    <Text className="text-center text-sm text-white">
+                        © 2025 By PT Lara Teknologi Studio - V.1.1.2
+                    </Text>
                 </View>
             </LinearGradient>
         </>

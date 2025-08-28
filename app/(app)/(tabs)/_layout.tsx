@@ -12,7 +12,7 @@ export default function TabLayout() {
         options={{
           title: 'Homes',
           headerShown: false,
-          tabBarIcon: ({  }) => <TabBarIcon name="home" color={"#ffb387ff"} />,
+          tabBarIcon: ({ }) => <TabBarIcon name="home" color={"#ffb387ff"} />,
         }}
       />
       <Tabs.Screen
@@ -20,7 +20,7 @@ export default function TabLayout() {
         options={{
           title: 'Booking',
           headerShown: true,
-          tabBarIcon: ({  }) => <TabBarIcon name="book" color={"#ffb387ff"} />,
+          tabBarIcon: ({ }) => <TabBarIcon name="book" color={"#ffb387ff"} />,
         }}
       />
       <Tabs.Screen
@@ -28,7 +28,7 @@ export default function TabLayout() {
         options={{
           title: 'User',
           headerShown: true,
-          tabBarIcon: ({  }) => <TabBarIcon name="user" color={"#ffb387ff"} />,
+          tabBarIcon: ({ }) => <TabBarIcon name="user" color={"#ffb387ff"} />,
         }}
       />
     </Tabs>

@@ -1,29 +1,26 @@
-import { useState } from 'react';
-import { View, Text, Alert, Pressable,Image } from 'react-native';
+import { View, Text, Alert, Pressable, Image } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useSession } from '~/middleware/middleware';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '~/api/auth';
+import { Response } from '~/interface/response';
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
   const { signIn } = useSession()
   const { phone } = useLocalSearchParams();
 
-  const handleLogin = async (otp: string) => {
-    try {
-      setLoading(true);
-      signIn(phone as string, otp)
-      router.replace("/(app)/(tabs)");
-    } catch (error) {
-      router.replace('/');
-      console.log(error)
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data: Response) => {
+      signIn(data.message.token)
+    },
+    onError: (_error) => {
       Alert.alert('Error', 'Login failed');
-    } finally {
-      setLoading(false);
     }
-  };
+  })
 
   const handleChangeNumber = async () => {
     router.replace('/sent-otp');
@@ -40,12 +37,12 @@ export default function Login() {
       >
         <View
           style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-                    <Text className='text-white mb-1 text-3xl font-sans font-extrabold'>
-                        Masukan Kode OTP
-                    </Text>
-                    <Text className='text-gray-100 mb-5 font-sans font-extrabold'>
-                        Anda akan diarahkan ke halaman home
-                    </Text>
+          <Text className='text-white mb-1 text-3xl font-sans font-extrabold'>
+            Masukan Kode OTP
+          </Text>
+          <Text className='text-gray-100 mb-5 font-sans font-extrabold'>
+            Anda akan diarahkan ke halaman home
+          </Text>
           <View className='items-center mb-4'>
             <LottieView
               autoPlay
@@ -59,11 +56,11 @@ export default function Login() {
             <View className='mx-[20%]'>
               <OtpInput
                 numberOfDigits={4}
-                disabled={loading}
+                disabled={mutation.isPending}
                 onTextChange={(text) => console.log(text)}
                 focusColor="white"
                 onFilled={(text) => {
-                  handleLogin(text)
+                  mutation.mutate({ phone: phone as string, otp: text })
                 }}
               />
             </View>
@@ -71,7 +68,6 @@ export default function Login() {
               Kode sudah dikirim ke whatsapp {phone}
             </Text>
             <Pressable
-              // className="mt-8 items-center rounded-xl border border-indigo-400 bg-indigo-400 shadow shadow-slate-700 w-[80%]"
               onPress={async () => await handleChangeNumber()}
             >
               <Text className="text-blue-600 text-center text-sm font-extralight">

@@ -4,35 +4,28 @@ import { TextInput, View, Text, ScrollView } from "react-native"
 import { Card } from "~/components/card";
 import { ImageCarousel } from "~/components/carousel";
 import { MainMenu } from "~/components/menu";
-import { request } from '~/helper/request';
-import { env } from '~/config/env';
-import { ResponsePaginate } from '~/interface/response';
-import { useEffect, useState } from 'react';
-import { jwtDecode } from "jwt-decode"
 import { UserSession } from '~/interface/user';
 import { useSession } from '~/middleware/middleware';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useQuery } from '@tanstack/react-query';
+import { getClinicList } from '~/api/clinic';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Index() {
   const { session } = useSession()
-  const initialClinic = { statusCode: 200, message: [], total: 1, totalPage: 1, isHasNextPage: false, }
-  const initialUser = { id: 0, name: '', identifier: '', email: '', phone: '', }
-  const [data, setData] = useState<ResponsePaginate>(initialClinic);
-  const [user, setUser] = useState<UserSession>(initialUser)
-
-  const fetchData = async () => {
-    const data = await request({
-      uri: env.baseUrl.klinikuApi + '/clinic?page=1&limit=10',
-      token: session as string,
-    });
-    const response: ResponsePaginate = data;
-    setUser(jwtDecode(session))
-    setData(response);
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const initialClinic = {
+    statusCode: 200,
+    message: [],
+    total: 1,
+    totalPage: 1,
+    isHasNextPage: false
+  }
+  const user = jwtDecode<UserSession>(session)
+  const { data } = useQuery({
+    queryKey: [],
+    queryFn: () => getClinicList({ session }),
+    initialData: initialClinic,
+  });
 
   return (
     <>
@@ -49,13 +42,13 @@ export default function Index() {
             <Text className="mt-5 text-2xl text-gray-100 font-semibold">
               Hi, {user.name}
             </Text>
-               <View className="mt-5 flex-row items-center bg-white rounded-xl border border-orange-500 px-3">
-      <FontAwesome name="search" size={20} color="#D1D5DB" />
-      <TextInput 
-        className="flex-1 py-3 ml-2 text-gray-500 placeholder:text-gray-300 focus:outline-none"
-        placeholder="search clinic"
-      />
-    </View>
+            <View className="mt-5 flex-row items-center bg-white rounded-xl border border-orange-500 px-3">
+              <FontAwesome name="search" size={20} color="#D1D5DB" />
+              <TextInput
+                className="flex-1 py-3 ml-2 text-gray-500 placeholder:text-gray-300 focus:outline-none"
+                placeholder="search clinic"
+              />
+            </View>
             <View className="mt-5 shadow shadow-xl">
               <ImageCarousel
                 images={carouselImage}
