@@ -1,6 +1,6 @@
-import { Stack } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { TextInput, View, Text, ScrollView } from "react-native"
+import { TextInput, View, Text, ScrollView, Pressable } from "react-native"
 import { Card } from "~/components/card";
 import { ImageCarousel } from "~/components/carousel";
 import { MainMenu } from "~/components/menu";
@@ -22,7 +22,7 @@ export default function Index() {
   }
   const user = jwtDecode<UserSession>(session)
   const { data } = useQuery({
-    queryKey: [],
+    queryKey: ['clinicList', user.id],
     queryFn: () => getClinicList({ session }),
     initialData: initialClinic,
   });
@@ -51,6 +51,7 @@ export default function Index() {
             </View>
             <View className="mt-5 shadow shadow-xl">
               <ImageCarousel
+                divideBy={1.1}
                 images={carouselImage}
               />
             </View>
@@ -58,14 +59,23 @@ export default function Index() {
               <MainMenu />
             </View>
             <ScrollView >
-              {data.message.map((item, index) => (
-                <Card
-                  key={index}
-                  title={item.name}
-                  image={item.images[0]}
-                  tags={item.polyclinics}
-                  rating={item.rating}
-                />
+              {data.message.map((item) => (
+                <Pressable
+                  key={item.id}
+                  onPress={() =>
+                    router.push({
+                      pathname: '/(app)/clinic/detail',
+                      params: { id: item.id },
+                    })
+                  }
+                >
+                  <Card
+                    title={item.name}
+                    image={item.images[0]}
+                    tags={item.polyclinics}
+                    rating={item.rating}
+                  />
+                </Pressable>
               ))}
             </ScrollView>
           </View>

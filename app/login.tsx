@@ -44,7 +44,7 @@ export default function Login() {
             Anda akan diarahkan ke halaman home
           </Text>
           <View className='items-center mb-4'>
-            <LottieView
+            {/* <LottieView
               autoPlay
               speed={0.5}
               style={{
@@ -52,7 +52,7 @@ export default function Login() {
                 height: 200
               }}
               source={require("../assets/lottie/otp-verification.json")}
-            />
+            /> */}
             <View className='mx-[20%]'>
               <OtpInput
                 numberOfDigits={4}
