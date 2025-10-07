@@ -6,7 +6,7 @@ import { ImageCarousel } from "~/components/carousel";
 import { MainMenu } from "~/components/menu";
 import { UserSession } from '~/interface/user';
 import { useSession } from '~/middleware/middleware';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useQuery } from '@tanstack/react-query';
 import { getClinicList } from '~/api/clinic';
 import { jwtDecode } from 'jwt-decode';
@@ -22,10 +22,12 @@ export default function Index() {
   }
   const user = jwtDecode<UserSession>(session)
   const { data } = useQuery({
-    queryKey: ['clinicList', user.id],
+    queryKey: ['clinicList'],
     queryFn: () => getClinicList({ session }),
     initialData: initialClinic,
   });
+
+  // console.log(session)
 
   return (
     <>
@@ -43,7 +45,7 @@ export default function Index() {
               Hi, {user.name}
             </Text>
             <View className="mt-5 flex-row items-center bg-white rounded-xl border border-blue-500 px-3">
-              <FontAwesome name="search" size={20} color="#D1D5DB" />
+              <Ionicons name="search-outline" size={18} color="gray" />
               <TextInput
                 className="flex-1 py-3 ml-2 text-gray-500 placeholder:text-gray-300 focus:outline-none"
                 placeholder="search clinic"

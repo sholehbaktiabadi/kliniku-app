@@ -7,6 +7,10 @@ export const sentOtp = async (data: { phone: string }) => {
 };
 
 export const login = async (data: { phone: string; otp: string }) => {
+  try {
     const response = await axios.post(env.baseUrl.klinikuApi + "/auth/login", data);
     return response.data;
+  } catch (error) {
+    throw error;
+  }
 };

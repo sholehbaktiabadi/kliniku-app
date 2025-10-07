@@ -1,4 +1,5 @@
-import { View, Text, Alert, Pressable, Image } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { router, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
@@ -7,6 +8,7 @@ import { useSession } from '~/middleware/middleware';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '~/api/auth';
 import { Response } from '~/interface/response';
+import { AxiosError } from 'axios';
 
 export default function Login() {
   const { signIn } = useSession()
@@ -17,10 +19,25 @@ export default function Login() {
     onSuccess: (data: Response) => {
       signIn(data.message.token)
     },
-    onError: (_error) => {
-      Alert.alert('Error', 'Login failed');
+    onError: (error: any) => {
+      if (error instanceof AxiosError) {
+        console.log(error.response)
+        const { message }: Response = error.response?.data
+        console.log("Backend error:", error.response?.data);
+        showToast(message);
+      } else {
+        showToast('an unexpected error occurred');
+      }
     }
   })
+
+  const showToast = (err: string) => {
+    Toast.show({
+      type: "error",
+      text1: 'Error',
+      text2: err,
+    });
+  };
 
   const handleChangeNumber = async () => {
     router.replace('/sent-otp');
@@ -37,10 +54,10 @@ export default function Login() {
       >
         <View
           style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-          <Text className='text-white mb-1 text-3xl font-sans font-extrabold'>
+          <Text className='text-center text-white mb-1 text-3xl font-sans font-extrabold'>
             Masukan Kode OTP
           </Text>
-          <Text className='text-gray-100 mb-5 font-sans font-extrabold'>
+          <Text className='text-center text-gray-100 mb-5 font-sans font-extrabold'>
             Anda akan diarahkan ke halaman home
           </Text>
           <View className='items-center mb-4'>
@@ -64,7 +81,7 @@ export default function Login() {
                 }}
               />
             </View>
-            <Text className="text-gray-600 mt-10 text-center text-sm font-extralight">
+            <Text className="text-white mt-10 text-center text-sm font-extralight">
               Kode sudah dikirim ke whatsapp {phone}
             </Text>
             <Pressable
@@ -76,6 +93,7 @@ export default function Login() {
             </Pressable>
           </View>
         </View>
+        <Toast />
       </LinearGradient>
     </>
   );

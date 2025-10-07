@@ -7,7 +7,9 @@ import { useMutation } from "@tanstack/react-query";
 import { sentOtp } from '~/api/auth';
 
 export default function SentOtp() {
+    const phoneMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-',/\d/, /\d/, /\d/, /\d/, '-',/\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
     const [phone, setPhone] = useState('');
+    const [activeButton, setActiveButton] = useState(false);
     const mutation = useMutation({
         mutationFn: sentOtp,
         onSuccess: (_data) => {
@@ -39,7 +41,7 @@ export default function SentOtp() {
                     </Text>
                     <View className='mb-10 mx-auto'>
                         <Image
-                            className="h-32 w-32 rounded-2xl"
+                            className="h-48 w-48 rounded-2xl"
                             source={require('../assets/app/kliniku.png')}
                         />
                     </View>
@@ -47,27 +49,38 @@ export default function SentOtp() {
                         defaultValues={{
                             countryCode: 'ID',
                             callingCode: '+62',
-                            phoneNumber: '+62',
+                            phoneNumber: '+62'
                         }}
                         countryPickerProps={{ disableNativeModal: true, countryCode: "ID", onSelect: (() => console.log()) }}
-                        isCallingCodeEditable={true}
+                        isCallingCodeEditable={false}
                         hideDropdownIcon={true}
-                        maskInputProps={{ mask: [/\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, /\d/] }}
+                        maskInputProps={{
+                            mask: phoneMask,
+                            editable: true
+                        }}
                         onChangeText={(phone) => {
                             console.log(
                                 'isValidNumber:',
                                 isValidNumber(phone, "ID"),
+                                'phone',
+                                console.log(phone)
                             )
+                            setActiveButton(isValidNumber(phone, "ID"))
                             setPhone(phone)
                         }
                         }
                     />
                     <View className="items-center">
-                        <Pressable
-                            className="mt-5 items-center rounded-xl border border-blue-400 bg-blue-400 shadow shadow-slate-700 w-[70%]"
-                            onPress={async () => mutation.mutate({ phone })}>
-                            <Text className="m-3 font-bold text-white">{mutation.isPending ? "Mengirim..." : "Kirim Otp"}</Text>
-                        </Pressable>
+                        {activeButton && (
+                            <Pressable
+                                className="mt-5 items-center rounded-xl border border-blue-400 bg-blue-400 shadow shadow-slate-700 w-[70%]"
+                                onPress={async () => mutation.mutate({ phone })}
+                            >
+                                <Text className="m-3 font-bold text-white">
+                                    {mutation.isPending ? "Mengirim..." : "Kirim Otp"}
+                                </Text>
+                            </Pressable>
+                        )}
                     </View>
                 </View>
                 <View className="absolute bottom-0 w-full py-4">
