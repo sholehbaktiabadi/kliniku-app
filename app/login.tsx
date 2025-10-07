@@ -29,7 +29,7 @@ export default function Login() {
   return (
     <>
       <LinearGradient
-        colors={['#ff792cff', '#ffb387ff', '#ffd5bcff', '#fff5f0ff']}
+        colors={['#2b7fff', '#63a2ffff', '#aaccffff', '#c4dcffff']}
         locations={[0.1, 0.39, 0.4, 1]}
         className="absolute top-0 left-0 right-0 bottom-0"
         start={{ x: 0, y: 0 }}

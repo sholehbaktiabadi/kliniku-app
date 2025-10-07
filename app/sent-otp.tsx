@@ -23,9 +23,8 @@ export default function SentOtp() {
 
     return (
         <>
-
             <LinearGradient
-                colors={['#ff792cff', '#ffb387ff', '#ffcaabff', '#ffeee5ff']}
+                colors={['#2b7fff', '#63a2ffff', '#aaccffff', '#c4dcffff']}
                 locations={[0.1, 0.39, 0.4, 1]}
                 className="absolute top-0 left-0 right-0 bottom-0"
                 start={{ x: 0, y: 0 }}
@@ -65,7 +64,7 @@ export default function SentOtp() {
                     />
                     <View className="items-center">
                         <Pressable
-                            className="mt-5 items-center rounded-xl border border-orange-400 bg-orange-400 shadow shadow-slate-700 w-[70%]"
+                            className="mt-5 items-center rounded-xl border border-blue-400 bg-blue-400 shadow shadow-slate-700 w-[70%]"
                             onPress={async () => mutation.mutate({ phone })}>
                             <Text className="m-3 font-bold text-white">{mutation.isPending ? "Mengirim..." : "Kirim Otp"}</Text>
                         </Pressable>

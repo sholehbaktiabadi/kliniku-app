@@ -32,7 +32,7 @@ export default function Index() {
       <Stack.Screen options={{ title: 'Home' }} />
       <ScrollView>
         <LinearGradient
-          colors={['#ff6d18ff', '#ffb387ff', '#f8f8f8ff', '#ffffffff']}
+          colors={['#2b7fff', '#63a2ffff', '#f8f8f8ff', '#ffffffff']}
           locations={[0.05, 0.29, 0.3, 1]}
           style={{ minHeight: '100%' }}
           start={{ x: 0.5, y: 0 }}
@@ -42,7 +42,7 @@ export default function Index() {
             <Text className="mt-5 text-2xl text-gray-100 font-semibold">
               Hi, {user.name}
             </Text>
-            <View className="mt-5 flex-row items-center bg-white rounded-xl border border-orange-500 px-3">
+            <View className="mt-5 flex-row items-center bg-white rounded-xl border border-blue-500 px-3">
               <FontAwesome name="search" size={20} color="#D1D5DB" />
               <TextInput
                 className="flex-1 py-3 ml-2 text-gray-500 placeholder:text-gray-300 focus:outline-none"
