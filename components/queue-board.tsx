@@ -4,6 +4,7 @@ import { View, Text, Pressable } from 'react-native';
 import Modal from 'react-native-modal';
 import { SimpleGrid } from 'react-native-super-grid';
 import { QueueColorList } from './queue-color';
+import { Ionicons } from '@expo/vector-icons';
 
 
 enum QueueStatus {
@@ -112,29 +113,55 @@ export const QueueBoard = ({
       </View>
 
       <Modal
-        animationIn="fadeIn"
-        animationOut="fadeOut"
+        animationIn="slideInUp"
+        animationOut="slideOutDown"
         isVisible={isModalVisible}
         onBackButtonPress={() => setModalVisible(false)}
-        onBackdropPress={() => setModalVisible(false)}>
-        <View className="flex-1 justify-end">
-          <View className="items-center justify-center rounded-xl bg-slate-50 px-16 py-20">
-            <Text className="text-center text-sm text-slate-500">
-              Apakah anda yakin memilih antrian {sequence}, selalu pantau live antrian untuk
-              estimasi kehadiran anda di klinik
-            </Text>
-            <View className="mt-5 h-20 w-48 items-center justify-center rounded-xl border-2 border-blue-300 ">
-              <Text className="text-3xl text-slate-700">{sequence}</Text>
-            </View>
+        onBackdropPress={() => setModalVisible(false)}
+        backdropOpacity={0.6}
+        style={{ margin: 0, justifyContent: 'flex-end' }}>
+        <View className="bg-white rounded-t-3xl pt-6 px-6 pb-8">
+          <View className="items-center mb-6">
+            <View className="w-12 h-1 bg-gray-300 rounded-full mb-4" />
+            <Ionicons name="card-outline" size={48} color="#6366f1" />
+          </View>
+
+          <Text className="text-xl font-bold text-center text-gray-800 mb-3">
+                            Konfirmasi Antrian
+                        </Text>
+
+          <Text className="text-center text-gray-600 text-base leading-6 mb-8">
+            Apakah anda yakin memilih antrian {sequence}, selalu pantau live antrian untuk
+            estimasi kehadiran anda di klinik
+          </Text>
+
+          <View className="flex-row space-x-4">
             <Pressable
-              className="m-3 rounded-xl border border-blue-400 bg-blue-400 p-3 shadow shadow-slate-700"
+              className="flex-1 border-2 border-gray-300 rounded-2xl py-4"
+              onPress={() => setModalVisible(false)}
+              style={({ pressed }) => ({
+                backgroundColor: pressed ? '#f9fafb' : 'white',
+              })}>
+              <Text className="text-center text-gray-600 font-semibold text-base">Batal</Text>
+            </Pressable>
+
+            <Pressable
+              className="flex-1 bg-indigo-600 rounded-2xl py-4"
               onPress={() =>
                 router.push({
-                  pathname: '/(app)/polyclinic/detail',
+                  pathname: '/(app)/book/summary',
                   params: { polyClinicId, sequence },
                 })
-              }>
-              <Text className="font-bold text-slate-100">Booking Antrian</Text>
+              }
+              style={({ pressed }) => ({
+                backgroundColor: pressed ? '#4338ca' : '#4f46e5',
+                shadowColor: '#6366f1',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: pressed ? 0.2 : 0.3,
+                shadowRadius: 8,
+                elevation: 6,
+              })}>
+              <Text className="text-center text-white font-semibold text-base">Pilih Antrian</Text>
             </Pressable>
           </View>
         </View>

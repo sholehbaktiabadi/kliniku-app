@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default function QueueScreen() {
-    const [eventData, setEventData] = useState<any>({ id: 0, queues: [] });
+    const [eventData, setEventData] = useState<any>({ queues: [] });
     const { session } = useSession();
     const { id } = useLocalSearchParams<{ id: string }>();
 
@@ -35,10 +35,9 @@ export default function QueueScreen() {
                 setEventData(res);
             });
         });
-
         return () => socketService.disconnect();
-    }, [id]);
-
+    }, [id, data]);
+    
     return (
         <>
             <Stack.Screen options={{ title: 'QueueDetail', headerShown: false }} />
@@ -54,7 +53,7 @@ export default function QueueScreen() {
                         <View className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-4">
                                 <View className="mb-3 flex flex-row flex-wrap items-center border-b border-blue-200 pb-3">
                                     <Image className="h-16 w-16 rounded-full" source={{ uri: data?.clinic?.imageProfile }} />
-                                    <Text className="mr-2 ms-4 text-slate-600">{data.clinic.name}</Text>
+                                    <Text className="mr-2 ms-4 text-slate-600">{data.clinic?.name}</Text>
                                     <MaterialIcons name="verified" size={24} color="blue" />
                                 </View>
                             <View className="flex flex-row flex-wrap">
@@ -64,13 +63,13 @@ export default function QueueScreen() {
                                     </View>
                                     <View className="flex flex-row flex-wrap items-center">
                                         <FontAwesome name="star" size={18} color="gold" />
-                                        <Text className="ms-1 mt-1 text-slate-500">{data.rating}</Text>
+                                        <Text className="ms-1 mt-1 text-slate-500">{data.clinic?.rating}</Text>
                                     </View>
                                 </View>
                                 <View className="h-24 flex-auto rounded-xl border border-blue-200 bg-blue-100 p-1">
                                     <View className="m-auto text-center">
                                         <Text className="text-xs text-slate-700">Alamat:</Text>
-                                        <Text className="text-xs text-slate-700">{data.adress}</Text>
+                                        <Text className="text-xs text-slate-700">{data.clinic?.adress}</Text>
                                     </View>
                                 </View>
                             </View>
