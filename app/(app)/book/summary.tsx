@@ -2,17 +2,22 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { jwtDecode } from 'jwt-decode';
-import React, { useEffect, useState } from 'react';
-import { ImageBackground, Pressable, Text, View, Animated, Easing, Alert } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ImageBackground, Pressable, Text, View, Animated, Easing, Alert, ScrollView } from 'react-native';
 import Modal from 'react-native-modal';
-import { bookQueue, getBookOrderSummary } from '~/api/book';
+import { getBookOrderSummary } from '~/api/book';
 import { UserSession } from '~/interface/user';
 import { useSession } from '~/middleware/middleware';
 import { Ionicons } from '@expo/vector-icons';
+import { createPayment } from '~/api/transaction';
+
+// Tipe untuk metode pembayaran
+type PaymentMethod = 'gopay' | 'ovo' | 'dana' | 'linkaja';
 
 export default function BookingSummary() {
     const { session } = useSession();
     const [isModalVisible, setModalVisible] = useState(false);
+    const [selectedPayment, setSelectedPayment] = useState<PaymentMethod>("gopay");
     const { polyClinicId, sequence } = useLocalSearchParams();
     const user = jwtDecode<UserSession>(session);
     const fadeAnim = useState(new Animated.Value(0))[0];
@@ -22,19 +27,26 @@ export default function BookingSummary() {
         message: {}
     };
 
-    const { data: { message: data } } = useQuery({
-        queryKey: ['bookingSummary'],
-        queryFn: () => getBookOrderSummary({ session, sequence: sequence as string, polyClinicId: polyClinicId as string }),
+    // Query dengan payment method di queryKey
+    const { data: { message: data }, refetch, isFetching } = useQuery({
+        queryKey: ['bookingSummary', selectedPayment], // Tambahkan selectedPayment ke queryKey
+        queryFn: () => getBookOrderSummary({ 
+            session, 
+            sequence: sequence as string, 
+            polyClinicId: polyClinicId as string,
+            paymentMethod: selectedPayment // Kirim payment method ke API
+        }),
         initialData: initialSummary,
+        enabled: true, // Selalu enabled, akan refetch ketika queryKey berubah
     });
 
     const mutation = useMutation({
-        mutationFn: bookQueue,
-        onSuccess: (_data) => {
+        mutationFn: createPayment,
+        onSuccess: (data) => {
             router.push({
-                pathname: '/(app)/polyclinic/detail',
+                pathname: '/(app)/payment/webview',
                 params: {
-                    id: polyClinicId
+                    redirect_url: data.message
                 },
             });
         },
@@ -52,7 +64,64 @@ export default function BookingSummary() {
         }).start();
     }, []);
 
+    // Effect untuk handle refetch ketika payment method berubah
+    useEffect(() => {
+        // Query akan otomatis refetch ketika selectedPayment berubah
+        // karena queryKey berubah
+    }, [selectedPayment]);
+
+    // Handler untuk mengganti payment method
+    const handlePaymentMethodChange = (method: PaymentMethod) => {
+        setSelectedPayment(method);
+        // Tidak perlu manual refetch di sini karena React Query akan otomatis
+        // melakukan refetch ketika queryKey berubah
+    };
+
+    // Data metode pembayaran
+    const paymentMethods = [
+
+        {
+            id: 'gopay' as PaymentMethod,
+            name: 'GoPay',
+            icon: 'phone-portrait-outline',
+            description: 'Bayar dengan GoPay',
+            color: '#00aa13'
+        },
+        {
+            id: 'ovo' as PaymentMethod,
+            name: 'OVO',
+            icon: 'card-outline',
+            description: 'Bayar dengan OVO',
+            color: '#4f46e5'
+        },
+        {
+            id: 'dana' as PaymentMethod,
+            name: 'Dana',
+            icon: 'qr-code-outline',
+            description: 'Bayar dengan Dana',
+            color: '#0488e0ff'
+        },
+        {
+            id: 'linkaja' as PaymentMethod,
+            name: 'Linkaja',
+            icon: 'bag-outline',
+            description: 'Bayar dengan Linkaja',
+            color: '#b82e2eff'
+        }
+    ];
+
+    const getPaymentIcon = (method: PaymentMethod) => {
+        switch (method) {
+            case 'gopay': return 'phone-portrait-outline';
+            case 'ovo': return 'card-outline';
+            case 'dana': return 'bag-outline';
+            case 'linkaja': return 'qr-code-outline';
+            default: return 'card-outline';
+        }
+    };
+
     return (
+        <ScrollView>
         <Animated.View style={{ opacity: fadeAnim, flex: 1 }}>
             <LinearGradient
                 colors={['#2b7fff', '#63a2ffff', '#f8f8f8ff', '#ffffffff']}
@@ -148,6 +217,58 @@ export default function BookingSummary() {
                         </View>
                     </View>
 
+                    {/* Payment Method Selection */}
+                    <View
+                        className="bg-white rounded-2xl p-5 mb-6"
+                        style={{
+                            shadowColor: '#6366f1',
+                            shadowOffset: { width: 0, height: 2 },
+                            shadowOpacity: 0.08,
+                            shadowRadius: 8,
+                            elevation: 4,
+                        }}
+                    >
+                        <Text className="text-lg font-semibold text-gray-800 mb-4">Metode Pembayaran</Text>
+
+                        <View className="space-y-3">
+                            {paymentMethods.map((method) => (
+                                <Pressable
+                                    key={method.id}
+                                    className={`flex-row items-center p-4 rounded-xl border-2 ${
+                                        selectedPayment === method.id 
+                                            ? 'border-indigo-500 bg-indigo-50' 
+                                            : 'border-gray-100 bg-white'
+                                    } ${isFetching ? 'opacity-50' : ''}`}
+                                    onPress={() => !isFetching && handlePaymentMethodChange(method.id)}
+                                    disabled={isFetching}
+                                    style={({ pressed }) => ({
+                                        transform: [{ scale: pressed && !isFetching ? 0.98 : 1 }],
+                                    })}
+                                >
+                                    <View 
+                                        className="w-10 h-10 rounded-lg justify-center items-center mr-3"
+                                        style={{ backgroundColor: method.color }}
+                                    >
+                                        <Ionicons name={method.icon as any} size={20} color="white" />
+                                    </View>
+                                    <View className="flex-1">
+                                        <Text className="text-gray-800 font-medium">{method.name}</Text>
+                                        <Text className="text-gray-500 text-xs">{method.description}</Text>
+                                    </View>
+                                    <View className={`w-5 h-5 rounded-full border-2 ${
+                                        selectedPayment === method.id 
+                                            ? 'bg-indigo-500 border-indigo-500' 
+                                            : 'border-gray-300'
+                                    }`}>
+                                        {selectedPayment === method.id && (
+                                            <Ionicons name="checkmark" size={14} color="white" />
+                                        )}
+                                    </View>
+                                </Pressable>
+                            ))}
+                        </View>
+                    </View>
+
                     {/* Price Breakdown */}
                     <View
                         className="bg-white rounded-2xl p-5"
@@ -164,38 +285,54 @@ export default function BookingSummary() {
                         <View className="space-y-3 mb-4">
                             <View className="flex-row justify-between">
                                 <Text className="text-gray-600">Biaya Pendaftaran</Text>
-                                <Text className="text-gray-800">Rp {data.bookingFee}</Text>
+                                <Text className="text-gray-800">
+                                    {isFetching ? 'Loading...' : data.bookingFee}
+                                </Text>
                             </View>
-
                             <View className="flex-row justify-between">
                                 <Text className="text-gray-600">Biaya Platform</Text>
-                                <Text className="text-gray-800">Rp {data.platformFee}</Text>
+                                <Text className="text-gray-800">
+                                    {isFetching ? 'Loading...' : data.platformFee}
+                                </Text>
                             </View>
+                            <View className="flex-row justify-between">
+                                <Text className="text-gray-600">PPN</Text>
+                                <Text className="text-gray-800">
+                                    {isFetching ? 'Loading...' : data.pg_fee}
+                                </Text>
+                            </View>                            
                         </View>
 
                         <View className="h-px bg-gray-200 my-2" />
 
                         <View className="flex-row justify-between">
                             <Text className="text-lg font-bold text-gray-800">Total</Text>
-                            <Text className="text-lg font-bold text-indigo-600">Rp {data.grandTotal}</Text>
+                            <Text className="text-lg font-bold text-indigo-600">
+                                {isFetching ? 'Loading...' : `Rp ${data.grandTotal}`}
+                            </Text>
                         </View>
                     </View>
 
                     {/* Payment Button */}
                     <Pressable
-                        className="mt-8 bg-indigo-600 rounded-2xl py-4"
-                        onPress={() => setModalVisible(true)}
+                        className={`mt-8 mb-20 rounded-2xl py-4 ${
+                            isFetching ? 'bg-gray-400' : 'bg-indigo-600'
+                        }`}
+                        onPress={() => !isFetching && setModalVisible(true)}
+                        disabled={isFetching}
                         style={({ pressed }) => ({
-                            transform: [{ scale: pressed ? 0.95 : 1 }],
+                            transform: [{ scale: pressed && !isFetching ? 0.95 : 1 }],
                             shadowColor: '#6366f1',
                             shadowOffset: { width: 0, height: 8 },
-                            shadowOpacity: 0.3,
+                            shadowOpacity: isFetching ? 0 : 0.3,
                             shadowRadius: 12,
-                            elevation: 8,
+                            elevation: isFetching ? 0 : 8,
                         })}>
                         <View className="flex-row justify-center items-center">
-                            <Text className="text-white font-bold text-lg mr-2">Lanjut Bayar</Text>
-                            <Ionicons name="arrow-forward" size={20} color="white" />
+                            <Text className="text-white font-bold text-lg mr-2">
+                                {isFetching ? 'Memperbarui...' : 'Lanjut Bayar'}
+                            </Text>
+                            {!isFetching && <Ionicons name="arrow-forward" size={20} color="white" />}
                         </View>
                     </Pressable>
                 </View>
@@ -212,15 +349,24 @@ export default function BookingSummary() {
                     <View className="bg-white rounded-t-3xl pt-6 px-6 pb-8">
                         <View className="items-center mb-6">
                             <View className="w-12 h-1 bg-gray-300 rounded-full mb-4" />
-                            <Ionicons name="card-outline" size={48} color="#6366f1" />
+                            <Ionicons name={getPaymentIcon(selectedPayment) as any} size={48} color="#6366f1" />
                         </View>
 
                         <Text className="text-xl font-bold text-center text-gray-800 mb-3">
                             Konfirmasi Pembayaran
                         </Text>
 
+                        <View className="bg-gray-50 rounded-xl p-4 mb-6">
+                            <Text className="text-center text-gray-600 text-sm mb-2">
+                                Metode Pembayaran
+                            </Text>
+                            <Text className="text-center text-gray-800 font-semibold text-lg">
+                                {paymentMethods.find(m => m.id === selectedPayment)?.name}
+                            </Text>
+                        </View>
+
                         <Text className="text-center text-gray-600 text-base leading-6 mb-8">
-                            Anda akan diarahkan ke halaman pembayaran untuk menyelesaikan transaksi
+                            Anda akan diarahkan ke halaman pembayaran {paymentMethods.find(m => m.id === selectedPayment)?.name} untuk menyelesaikan transaksi
                         </Text>
 
                         <View className="flex-row space-x-4">
@@ -235,7 +381,13 @@ export default function BookingSummary() {
 
                             <Pressable
                                 className="flex-1 bg-indigo-600 rounded-2xl py-4"
-                                onPress={async () => mutation.mutate({ session, sequence: sequence as string, polyClinicId: polyClinicId as string })}
+                                onPress={async () => mutation.mutate({ 
+                                    session, 
+                                    sequence: sequence as string, 
+                                    polyClinicId: polyClinicId as string,
+                                    paymentMethod: selectedPayment,
+                                    grandTotal: data.total
+                                })}
                                 style={({ pressed }) => ({
                                     backgroundColor: pressed ? '#4338ca' : '#4f46e5',
                                     shadowColor: '#6366f1',
@@ -247,12 +399,12 @@ export default function BookingSummary() {
                                 <Text className="text-center text-white font-semibold text-base">
                                     {mutation.isPending ? "Processing" : "Bayar Sekarang"}
                                 </Text>
-                                {/* <Text className="text-center text-white font-semibold text-base">Bayar Sekarang</Text> */}
                             </Pressable>
                         </View>
                     </View>
                 </Modal>
             </LinearGradient>
         </Animated.View>
+        </ScrollView>
     );
 }
