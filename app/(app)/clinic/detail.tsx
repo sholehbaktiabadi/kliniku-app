@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useQuery } from '@tanstack/react-query';
@@ -34,28 +35,51 @@ export default function ClinicDetailScreen() {
                     <View className="flex flex-1 mt-10 p-6">
                         <View className="mt-10 rounded-xl border border-blue-200 bg-slate-50 p-4">
                             <View>
-                                <View className="mb-3 flex flex-row flex-wrap items-center border-b border-blue-200 pb-3">
-                                    <Image className="h-16 w-16 rounded-full" source={{ uri: data.imageProfile }} />
-                                    <Text className="mr-2 ms-4 text-slate-600">{data.name}</Text>
-                                    <MaterialIcons name="verified" size={24} color="blue" />
-                                </View>
-                                <View className="flex flex-row flex-wrap">
-                                    <View className="mr-2 h-24 basis-3/12 items-center justify-center overflow-hidden rounded-xl border border-blue-300">
-                                        <View className="flex flex-row flex-wrap">
-                                            <Text className="ms-1 mt-1 text-sm text-slate-500">Rating</Text>
-                                        </View>
-                                        <View className="flex flex-row flex-wrap items-center">
-                                            <FontAwesome name="star" size={18} color="gold" />
-                                            <Text className="ms-1 mt-1 text-slate-500">{data.rating}</Text>
+                                <View className="flex-row items-start mb-5">
+                                    {/* Left - Image & Rating */}
+                                    <View className="relative">
+                                        <Image
+                                            className="h-28 w-28 rounded-2xl border-4 border-white shadow-md"
+                                            source={{ uri: data?.imageProfile }}
+                                        />
+                                        <View className="absolute -bottom-1 -right-1 bg-blue-500 rounded-full p-1 border-2 border-white">
+                                            <MaterialIcons name="verified" size={16} color="white" />
                                         </View>
                                     </View>
-                                    <View className="h-24 flex-auto rounded-xl border border-blue-200 bg-blue-100 p-1">
-                                        <View className="m-auto text-center">
-                                            <Text className="text-xs text-slate-700">Alamat:</Text>
-                                            <Text className="text-xs text-slate-700">{data.adress}</Text>
+
+                                    {/* Right - Content */}
+                                    <View className="flex-1 ms-2">
+                                        <View className="flex-row items-center mb-2">
+                                            <Text className="text-lg font-bold text-gray-800 mr-2">{data?.name}</Text>
+                                        </View>
+
+                                        <View className="flex-row items-start mb-3">
+                                            <Ionicons name="star-half" size={16} color="#F59E0B" />
+                                            <Text className="text-amber-800 font-bold ml-1">{data?.rating}</Text>
+                                        </View>
+
+                                        <View className="flex-row space-x-2">
+                                            {/* <View className="bg-blue-50 rounded-lg px-3 py-1">
+                                            <Text className="text-blue-700 text-xs font-medium">24 Jam</Text>
+                                        </View> */}
+                                            <View className="bg-green-50 rounded-lg px-3 py-1">
+                                                <Text className="text-green-700 text-xs font-medium">Tersedia</Text>
+                                            </View>
                                         </View>
                                     </View>
                                 </View>
+
+                                <View className="mb-4">
+                                    <Text className="text-sm text-gray-600">
+                                        Alamat:
+                                    </Text>
+                                </View>
+
+                                <View className="flex-row items-start">
+                                    <Ionicons name="location" size={16} color="#b6b6b6ff" />
+                                    <Text className="text-gray-600 text-sm font-light ml-2 flex-1">{data?.adress}</Text>
+                                </View>
+
                                 <View>{data.schedules ? <View className="mt-5 flex">
                                     <Text className="my-2 ms-1 text-xs text-slate-700">Jadwal Buka</Text>
                                     {data.schedules.map((res: any) => (
