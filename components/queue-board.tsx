@@ -87,6 +87,7 @@ export const QueueBoard = ({
 
   return (
     <>
+    <View className='bg-white rounded-xl shadow shadow-md'>
       <SimpleGrid
         data={queues}
         listKey=""
@@ -110,6 +111,7 @@ export const QueueBoard = ({
       />
       <View className="mb-10">
         <QueueColorList />
+      </View>
       </View>
 
       <Modal
