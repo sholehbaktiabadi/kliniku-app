@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from 'react';
@@ -10,6 +9,7 @@ import { UserSession } from '~/interface/user';
 import { useSession } from '~/middleware/middleware';
 import { Ionicons } from '@expo/vector-icons';
 import { createPayment } from '~/api/transaction';
+import { GradientBackground } from '~/components/background';
 
 // Tipe untuk metode pembayaran
 type PaymentMethod = 'gopay' | 'ovo' | 'dana' | 'linkaja';
@@ -123,13 +123,7 @@ export default function BookingSummary() {
     return (
         <ScrollView>
         <Animated.View style={{ opacity: fadeAnim, flex: 1 }}>
-            <LinearGradient
-                colors={['#2b7fff', '#63a2ffff', '#f8f8f8ff', '#ffffffff']}
-                locations={[0.05, 0.29, 0.3, 1]}
-                style={{ minHeight: '100%' }}
-                start={{ x: 0.5, y: 0 }}
-                end={{ x: 0.5, y: 1 }}
-            >
+            <GradientBackground>
                 <View className="flex-1 px-6 pt-16">
                     {/* Header */}
                     <View className="mb-8">
@@ -403,7 +397,7 @@ export default function BookingSummary() {
                         </View>
                     </View>
                 </Modal>
-            </LinearGradient>
+            </GradientBackground>
         </Animated.View>
         </ScrollView>
     );

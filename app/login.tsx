@@ -3,12 +3,12 @@ import Toast from 'react-native-toast-message';
 import { router, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
-import { LinearGradient } from 'expo-linear-gradient';
 import { useSession } from '~/middleware/middleware';
 import { useMutation } from '@tanstack/react-query';
 import { login } from '~/api/auth';
 import { Response } from '~/interface/response';
 import { AxiosError } from 'axios';
+import { AuthBackground } from '~/components/background';
 
 export default function Login() {
   const { signIn } = useSession()
@@ -45,48 +45,44 @@ export default function Login() {
 
   return (
     <>
-      <LinearGradient
-        colors={['#2b7fff', '#63a2ffff', '#aaccffff', '#c4dcffff']}
-        locations={[0.1, 0.39, 0.4, 1]}
-        className="absolute top-0 left-0 right-0 bottom-0"
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
+      <AuthBackground>
         <KeyboardAvoidingView
           style={{ flex: 1 }}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
         >
-          <View
-            style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-            <Text className='text-center text-white mb-1 text-3xl font-sans font-extrabold'>
-              Masukan Kode OTP
-            </Text>
-            <Text className='text-center text-gray-100 mb-5 font-sans font-extrabold'>
-              Anda akan diarahkan ke halaman home
-            </Text>
-            <View className='items-center mb-4'>
-              {/* <LottieView
-              autoPlay
-              speed={0.5}
-              style={{
-                width: 400,
-                height: 200
-              }}
-              source={require("../assets/lottie/otp-verification.json")}
-            /> */}
-              <View className='mx-[20%]'>
+          <View style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
+                        <Text className='text-white mb-1 text-2xl font-bold'>
+                            Masukan Kode OTP
+                        </Text>
+                        <Text className='text-white font-light'>
+                            Anda akan di arahkan ke ahalaman home
+                        </Text>
+            <View className='items-center'>
+              <View className='mb-8'>
+                <LottieView
+                  autoPlay
+                  speed={0.6}
+                  style={{
+                    width: 250,
+                    height: 250
+                  }}
+                  source={require("../assets/lottie/otp-verification-v2.json")}
+                />
+              </View>
+              <View className='mx-10'>
                 <OtpInput
                   numberOfDigits={4}
                   disabled={mutation.isPending}
-                  focusColor="white"
+                  focusColor="#2b7fff"
+                  textProps={{ style : { color: "white" } }}
                   onFilled={(text) => {
                     mutation.mutate({ phone: phone as string, otp: text })
                   }}
                 />
               </View>
-              <Text className="text-white mt-10 text-center text-sm font-extralight">
-                Kode sudah dikirim ke whatsapp {phone}
+              <Text className="text-white mt-10 text-center text-sm font-light">
+                Kode otp sudah dikirim ke whatsapp {phone}
               </Text>
               <Pressable
                 onPress={async () => await handleChangeNumber()}
@@ -99,7 +95,7 @@ export default function Login() {
           </View>
           <Toast />
         </KeyboardAvoidingView>
-      </LinearGradient>
+      </AuthBackground>
     </>
   );
 }

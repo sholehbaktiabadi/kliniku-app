@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { View, Text, Pressable, Image, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { router } from 'expo-router';
 import { isValidNumber, PhoneInput } from 'react-native-phone-entry';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useMutation } from "@tanstack/react-query";
 import { sentOtp } from '~/api/auth';
+import { PrimaryButton } from '~/components/button';
+import { AuthBackground } from '~/components/background';
 
 export default function SentOtp() {
     const phoneMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/, /\d/, /\d/]
@@ -25,24 +26,18 @@ export default function SentOtp() {
 
     return (
         <>
-            <LinearGradient
-                colors={['#2b7fff', '#63a2ffff', '#aaccffff', '#c4dcffff']}
-                locations={[0.1, 0.39, 0.4, 1]}
-                className="absolute top-0 left-0 right-0 bottom-0"
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-            >
+            <AuthBackground>
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
                 >
                     <View style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-                        <Text className='text-white mb-1 text-3xl font-sans font-extrabold'>
-                            Kirim Kode OTP
+                        <Text className='text-white mb-1 text-2xl font-bold'>
+                            Login Melaui Whatsapp
                         </Text>
-                        <Text className='text-gray-100 mb-10 font-sans font-extrabold'>
-                            Masukan nomor whatsapp
+                        <Text className='text-white mb-10 font-light'>
+                            Kode otp akan di kirim ke nomor anda
                         </Text>
                         <View className='mb-10 mx-auto'>
                             <Image
@@ -70,25 +65,22 @@ export default function SentOtp() {
                             }
                         />
                         <View className="items-center">
-                            {activeButton && (
-                                <Pressable
-                                    className="mt-5 items-center rounded-xl border border-blue-400 bg-blue-400 shadow shadow-slate-700 w-[70%]"
-                                    onPress={async () => mutation.mutate({ phone })}
-                                >
-                                    <Text className="m-3 font-bold text-white">
-                                        {mutation.isPending ? "Mengirim..." : "Kirim Otp"}
-                                    </Text>
-                                </Pressable>
-                            )}
+                            <PrimaryButton
+                                title={mutation.isPending ? "Mengirim..." : "Sent OTP code"}
+                                onPress={() => mutation.mutate({ phone })}
+                                disabled={!activeButton}
+                                loading={mutation.isPending}
+                                variant={"secondary"}
+                            />
                         </View>
                     </View>
-                    <View className="absolute bottom-0 w-full py-4">
-                        <Text className="text-center text-sm text-white">
-                            © 2025 By PT Lara Teknologi Studio - V.1.1.2
+                    <View className="absolute bottom-0 w-full">
+                        <Text className="text-center text-sm font-light text-white">
+                            © 2025 by PT Lara Teknologi Studio - V 1.0.2
                         </Text>
                     </View>
                 </KeyboardAvoidingView>
-            </LinearGradient>
+            </AuthBackground>
         </>
     );
 }

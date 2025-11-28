@@ -1,11 +1,11 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useQuery } from '@tanstack/react-query';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { ScrollView, View, Text, Dimensions, ImageBackground, Pressable, Image } from 'react-native';
 import { SimpleGrid } from 'react-native-super-grid';
 import { getClinicdetails } from '~/api/clinic';
+import { GradientBackground } from '~/components/background';
 import { ImageCarousel } from '~/components/carousel';
 
 import { useSession } from '~/middleware/middleware';
@@ -29,14 +29,8 @@ export default function ClinicDetailScreen() {
     return (
         <>
             <Stack.Screen options={{ title: 'ClinicList', headerShown: false }} />
-            <ScrollView>
-                <LinearGradient
-                    colors={['#2b7fff', '#63a2ffff', '#f8f8f8ff', '#ffffffff']}
-                    locations={[0.05, 0.29, 0.3, 1]}
-                    style={{ minHeight: '100%' }}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
-                >
+            <GradientBackground>
+                <ScrollView>
                     <View className="flex flex-1 mt-10 p-6">
                         <View className="mt-10 rounded-xl border border-blue-200 bg-slate-50 p-4">
                             <View>
@@ -125,8 +119,8 @@ export default function ClinicDetailScreen() {
                             </View>
                         </View>
                     </View>
-                </LinearGradient>
-            </ScrollView>
+                </ScrollView>
+            </GradientBackground>
         </>
     );
 }

@@ -10,8 +10,8 @@ import { useSession } from '~/middleware/middleware';
 import { polyEvent } from '~/const/event';
 import { QueueBoard } from '~/components/queue-board';
 import { QueueRegistered } from '~/components/queue-registered';
-import { LinearGradient } from 'expo-linear-gradient';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { GradientBackground } from '~/components/background';
 
 export default function QueueScreen() {
     const [eventData, setEventData] = useState<any>({ queues: [] });
@@ -37,25 +37,19 @@ export default function QueueScreen() {
         });
         return () => socketService.disconnect();
     }, [id, data]);
-    
+
     return (
         <>
             <Stack.Screen options={{ title: 'QueueDetail', headerShown: false }} />
-            <ScrollView>
-                <LinearGradient
-                    colors={['#2b7fff', '#63a2ffff', '#f8f8f8ff', '#ffffffff']}
-                    locations={[0.05, 0.29, 0.3, 1]}
-                    style={{ minHeight: '100%' }}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
-                >
+            <GradientBackground>
+                <ScrollView>
                     <View className="flex flex-1 mt-10 p-6">
                         <View className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-4">
-                                <View className="mb-3 flex flex-row flex-wrap items-center border-b border-blue-200 pb-3">
-                                    <Image className="h-16 w-16 rounded-full" source={{ uri: data?.clinic?.imageProfile }} />
-                                    <Text className="mr-2 ms-4 text-slate-600">{data.clinic?.name}</Text>
-                                    <MaterialIcons name="verified" size={24} color="blue" />
-                                </View>
+                            <View className="mb-3 flex flex-row flex-wrap items-center border-b border-blue-200 pb-3">
+                                <Image className="h-16 w-16 rounded-full" source={{ uri: data?.clinic?.imageProfile }} />
+                                <Text className="mr-2 ms-4 text-slate-600">{data.clinic?.name}</Text>
+                                <MaterialIcons name="verified" size={24} color="blue" />
+                            </View>
                             <View className="flex flex-row flex-wrap">
                                 <View className="mr-2 h-24 basis-3/12 items-center justify-center overflow-hidden rounded-xl border border-blue-300">
                                     <View className="flex flex-row flex-wrap">
@@ -85,8 +79,8 @@ export default function QueueScreen() {
                             />
                         </View>
                     </View>
-                </LinearGradient>
-            </ScrollView>
+                </ScrollView>
+            </GradientBackground>
         </>
     );
 }
