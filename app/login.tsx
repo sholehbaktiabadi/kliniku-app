@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { router, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
@@ -17,7 +17,7 @@ export default function Login() {
   const mutation = useMutation({
     mutationFn: login,
     onSuccess: (data: Response) => {
-      signIn(data.message.token)
+      signIn(data.message.token, data.message.refreshToken)
     },
     onError: (error: any) => {
       if (error instanceof AxiosError) {
@@ -52,16 +52,21 @@ export default function Login() {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       >
-        <View
-          style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-          <Text className='text-center text-white mb-1 text-3xl font-sans font-extrabold'>
-            Masukan Kode OTP
-          </Text>
-          <Text className='text-center text-gray-100 mb-5 font-sans font-extrabold'>
-            Anda akan diarahkan ke halaman home
-          </Text>
-          <View className='items-center mb-4'>
-            {/* <LottieView
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+        >
+          <View
+            style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
+            <Text className='text-center text-white mb-1 text-3xl font-sans font-extrabold'>
+              Masukan Kode OTP
+            </Text>
+            <Text className='text-center text-gray-100 mb-5 font-sans font-extrabold'>
+              Anda akan diarahkan ke halaman home
+            </Text>
+            <View className='items-center mb-4'>
+              {/* <LottieView
               autoPlay
               speed={0.5}
               style={{
@@ -70,30 +75,30 @@ export default function Login() {
               }}
               source={require("../assets/lottie/otp-verification.json")}
             /> */}
-            <View className='mx-[20%]'>
-              <OtpInput
-                numberOfDigits={4}
-                disabled={mutation.isPending}
-                onTextChange={(text) => console.log(text)}
-                focusColor="white"
-                onFilled={(text) => {
-                  mutation.mutate({ phone: phone as string, otp: text })
-                }}
-              />
-            </View>
-            <Text className="text-white mt-10 text-center text-sm font-extralight">
-              Kode sudah dikirim ke whatsapp {phone}
-            </Text>
-            <Pressable
-              onPress={async () => await handleChangeNumber()}
-            >
-              <Text className="text-blue-600 text-center text-sm font-extralight">
-                Ubah Nomor telephone
+              <View className='mx-[20%]'>
+                <OtpInput
+                  numberOfDigits={4}
+                  disabled={mutation.isPending}
+                  focusColor="white"
+                  onFilled={(text) => {
+                    mutation.mutate({ phone: phone as string, otp: text })
+                  }}
+                />
+              </View>
+              <Text className="text-white mt-10 text-center text-sm font-extralight">
+                Kode sudah dikirim ke whatsapp {phone}
               </Text>
-            </Pressable>
+              <Pressable
+                onPress={async () => await handleChangeNumber()}
+              >
+                <Text className="text-blue-600 text-center text-sm font-extralight">
+                  Ubah Nomor telephone
+                </Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-        <Toast />
+          <Toast />
+        </KeyboardAvoidingView>
       </LinearGradient>
     </>
   );

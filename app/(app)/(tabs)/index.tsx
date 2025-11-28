@@ -12,7 +12,7 @@ import { getClinicList } from '~/api/clinic';
 import { jwtDecode } from 'jwt-decode';
 
 export default function Index() {
-  const { session } = useSession()
+  const { session, refreshToken } = useSession()
   const initialClinic = {
     statusCode: 200,
     message: [],
@@ -26,8 +26,6 @@ export default function Index() {
     queryFn: () => getClinicList({ session }),
     initialData: initialClinic,
   });
-
-  // console.log(session)
 
   return (
     <>
