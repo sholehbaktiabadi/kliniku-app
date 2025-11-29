@@ -10,15 +10,15 @@ export const QueueRegistered = ({
 }) => {
   return (
     <>
-      <View className="flex flex-row rounded-xl bg-blue-100">
+      <View className="flex flex-row rounded-xl bg-blue-50">
         <View className="basis-1/2">
           <View className="flex flex-row">
-            <View className="h-24 basis-1/2 items-center justify-center">
-              <View className="h-16 w-16 items-center justify-center rounded-xl bg-white">
+            <View className="h-16 basis-1/2 items-center justify-center">
+              <View className="h-10 w-10 items-center justify-center rounded-xl bg-white">
                 <Text className="text-3xl text-slate-500">{totalRegistrant}</Text>
               </View>
             </View>
-            <View className="h-24 basis-1/2 justify-center">
+            <View className="h-18 basis-1/2 justify-center">
               <Text className="text-sm text-slate-500">Total Pasien</Text>
             </View>
           </View>
@@ -26,12 +26,12 @@ export const QueueRegistered = ({
         {userCurrentQueue ? (
           <View className="basis-1/2">
             <View className="flex flex-row">
-              <View className="h-24 basis-1/2 items-center justify-center">
-                <View className="h-16 w-16 items-center justify-center rounded-xl bg-white">
+              <View className="h-16 basis-1/2 items-center justify-center">
+                <View className="h-10 w-10 items-center justify-center rounded-xl bg-white">
                   <Text className="text-3xl text-slate-500">{userCurrentQueue}</Text>
                 </View>
               </View>
-              <View className="h-24 basis-1/2 justify-center">
+              <View className="h-18 basis-1/2 justify-center">
                 <Text className="text-sm text-slate-500">Antrian Anda</Text>
               </View>
             </View>

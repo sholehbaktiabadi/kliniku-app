@@ -87,31 +87,31 @@ export const QueueBoard = ({
 
   return (
     <>
-    <View className='bg-white rounded-xl shadow shadow-md'>
-      <SimpleGrid
-        data={queues}
-        listKey=""
-        spacing={15}
-        itemDimension={60}
-        renderItem={({ item }) => (
-          <View className="items-center justify-center">
-            <Pressable
-              onPress={() => {
-                setSequence(item.sequence);
-                setModalVisible(true);
-              }}
-              disabled={item.status != 'EMPTY'}
-              className={`h-14 w-20 items-center justify-center rounded-lg ${colorDecission(item.status)}`}>
-              <Text className={textColorDecission(item.status)}>
-                {textDecission(item.status, item.sequence)}
-              </Text>
-            </Pressable>
-          </View>
-        )}
-      />
-      <View className="mb-10">
-        <QueueColorList />
-      </View>
+      <View className='bg-white rounded-xl shadow shadow-md'>
+        <SimpleGrid
+          data={queues}
+          listKey=""
+          spacing={15}
+          itemDimension={60}
+          renderItem={({ item }) => (
+            <View className="items-center justify-center">
+              <Pressable
+                onPress={() => {
+                  setSequence(item.sequence);
+                  setModalVisible(true);
+                }}
+                disabled={item.status != 'EMPTY'}
+                className={`h-14 w-20 items-center justify-center rounded-lg ${colorDecission(item.status)}`}>
+                <Text className={textColorDecission(item.status)}>
+                  {textDecission(item.status, item.sequence)}
+                </Text>
+              </Pressable>
+            </View>
+          )}
+        />
+        <View className="mb-10">
+          <QueueColorList />
+        </View>
       </View>
 
       <Modal
@@ -129,8 +129,8 @@ export const QueueBoard = ({
           </View>
 
           <Text className="text-xl font-bold text-center text-gray-800 mb-3">
-                            Konfirmasi Antrian
-                        </Text>
+            Konfirmasi Antrian
+          </Text>
 
           <Text className="text-center text-gray-600 text-base leading-6 mb-8">
             Apakah anda yakin memilih antrian {sequence}, selalu pantau live antrian untuk

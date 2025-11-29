@@ -124,7 +124,7 @@ export default function BookingSummary() {
         <GradientBackground>
             <ScrollView>
                 <Animated.View style={{ opacity: fadeAnim, flex: 1 }}>
-                    <View className="flex-1 px-6 pt-16">
+                    <View className="flex-1 px-3 pt-16">
                         {/* Header */}
                         <View className="mb-8">
                             <Text className="text-3xl font-bold text-white mb-2">Checkout Payment</Text>
@@ -135,7 +135,7 @@ export default function BookingSummary() {
                         <View
                             className="bg-white rounded-2xl mb-6 overflow-hidden"
                             style={{
-                                shadowColor: '#6366f1',
+                                shadowColor: '#63a2ffff',
                                 shadowOffset: { width: 0, height: 4 },
                                 shadowOpacity: 0.1,
                                 shadowRadius: 12,
@@ -143,7 +143,7 @@ export default function BookingSummary() {
                             }}
                         >
                             <View className="flex-row">
-                                <View className="p-4 justify-center items-center bg-indigo-50">
+                                <View className="p-4 justify-center items-center bg-blue-50">
                                     <ImageBackground
                                         className="overflow-hidden rounded-xl"
                                         source={{ uri: 'https://dummyimage.com/600x400/4f4f4e/ffffff' }}
@@ -156,8 +156,8 @@ export default function BookingSummary() {
                                         {data.clinic?.name}
                                     </Text>
                                     <View className="flex-row items-center">
-                                        <Ionicons name="location-outline" size={14} color="#6b7280" />
-                                        <Text className="text-xs text-gray-500 ml-1 flex-1">
+                                        {/* <Ionicons name="location-outline" size={14} color="#6b7280" /> */}
+                                        <Text className="text-xs text-gray-500 flex-1">
                                             {data.clinic?.adress}
                                         </Text>
                                     </View>
@@ -169,7 +169,7 @@ export default function BookingSummary() {
                         <View
                             className="bg-white rounded-2xl p-5 mb-6"
                             style={{
-                                shadowColor: '#6366f1',
+                                shadowColor: '#63a2ffff',
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.08,
                                 shadowRadius: 8,
@@ -181,7 +181,7 @@ export default function BookingSummary() {
                             <View className="space-y-4">
                                 <View className="flex-row items-center justify-between py-2">
                                     <View className="flex-row items-center">
-                                        <Ionicons name="medical-outline" size={18} color="#6366f1" />
+                                        <Ionicons name="medical-outline" size={18} color="#63a2ffff" />
                                         <Text className="text-gray-600 ml-3">Poli</Text>
                                     </View>
                                     <Text className="text-gray-800 font-medium">{data.poly?.name}</Text>
@@ -191,7 +191,7 @@ export default function BookingSummary() {
 
                                 <View className="flex-row items-center justify-between py-2">
                                     <View className="flex-row items-center">
-                                        <Ionicons name="person-outline" size={18} color="#6366f1" />
+                                        <Ionicons name="person-outline" size={18} color="#63a2ffff" />
                                         <Text className="text-gray-600 ml-3">Nama Anda</Text>
                                     </View>
                                     <Text className="text-gray-800 font-medium">{user.name}</Text>
@@ -201,11 +201,11 @@ export default function BookingSummary() {
 
                                 <View className="flex-row items-center justify-between py-2">
                                     <View className="flex-row items-center">
-                                        <Ionicons name="receipt-outline" size={18} color="#6366f1" />
+                                        <Ionicons name="receipt-outline" size={18} color="#63a2ffff" />
                                         <Text className="text-gray-600 ml-3">Antrian</Text>
                                     </View>
-                                    <View className="bg-indigo-100 px-3 py-1 rounded-full">
-                                        <Text className="text-indigo-700 font-bold text-sm">#{sequence}</Text>
+                                    <View className="bg-blue-100 px-3 py-1 rounded-full">
+                                        <Text className="text-blue-700 font-bold text-sm">#{sequence}</Text>
                                     </View>
                                 </View>
                             </View>
@@ -215,7 +215,7 @@ export default function BookingSummary() {
                         <View
                             className="bg-white rounded-2xl p-5 mb-6"
                             style={{
-                                shadowColor: '#6366f1',
+                                shadowColor: '#63a2ffff',
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.08,
                                 shadowRadius: 8,
@@ -229,7 +229,7 @@ export default function BookingSummary() {
                                     <Pressable
                                         key={method.id}
                                         className={`flex-row items-center p-4 rounded-xl border-2 ${selectedPayment === method.id
-                                                ? 'border-indigo-500 bg-indigo-50'
+                                                ? 'border-blue-500 bg-blue-50'
                                                 : 'border-gray-100 bg-white'
                                             } ${isFetching ? 'opacity-50' : ''}`}
                                         onPress={() => !isFetching && handlePaymentMethodChange(method.id)}
@@ -249,7 +249,7 @@ export default function BookingSummary() {
                                             <Text className="text-gray-500 text-xs">{method.description}</Text>
                                         </View>
                                         <View className={`w-5 h-5 rounded-full border-2 ${selectedPayment === method.id
-                                                ? 'bg-indigo-500 border-indigo-500'
+                                                ? 'bg-blue-500 border-blue-500'
                                                 : 'border-gray-300'
                                             }`}>
                                             {selectedPayment === method.id && (
@@ -265,7 +265,7 @@ export default function BookingSummary() {
                         <View
                             className="bg-white rounded-2xl p-5"
                             style={{
-                                shadowColor: '#6366f1',
+                                shadowColor: '#63a2ffff',
                                 shadowOffset: { width: 0, height: 2 },
                                 shadowOpacity: 0.08,
                                 shadowRadius: 8,
@@ -299,7 +299,7 @@ export default function BookingSummary() {
 
                             <View className="flex-row justify-between">
                                 <Text className="text-lg font-bold text-gray-800">Total</Text>
-                                <Text className="text-lg font-bold text-indigo-600">
+                                <Text className="text-lg font-bold text-blue-600">
                                     {isFetching ? 'Loading...' : `Rp ${data.grandTotal}`}
                                 </Text>
                             </View>
@@ -307,13 +307,13 @@ export default function BookingSummary() {
 
                         {/* Payment Button */}
                         <Pressable
-                            className={`mt-8 mb-20 rounded-2xl py-4 ${isFetching ? 'bg-gray-400' : 'bg-indigo-600'
+                            className={`mt-8 mb-20 rounded-2xl py-4 ${isFetching ? 'bg-gray-400' : 'bg-blue-600'
                                 }`}
                             onPress={() => !isFetching && setModalVisible(true)}
                             disabled={isFetching}
                             style={({ pressed }) => ({
                                 transform: [{ scale: pressed && !isFetching ? 0.95 : 1 }],
-                                shadowColor: '#6366f1',
+                                shadowColor: '#63a2ffff',
                                 shadowOffset: { width: 0, height: 8 },
                                 shadowOpacity: isFetching ? 0 : 0.3,
                                 shadowRadius: 12,
@@ -340,7 +340,7 @@ export default function BookingSummary() {
                         <View className="bg-white rounded-t-3xl pt-6 px-6 pb-8">
                             <View className="items-center mb-6">
                                 <View className="w-12 h-1 bg-gray-300 rounded-full mb-4" />
-                                <Ionicons name={getPaymentIcon(selectedPayment) as any} size={48} color="#6366f1" />
+                                <Ionicons name={getPaymentIcon(selectedPayment) as any} size={48} color="#63a2ffff" />
                             </View>
 
                             <Text className="text-xl font-bold text-center text-gray-800 mb-3">
@@ -371,7 +371,7 @@ export default function BookingSummary() {
                                 </Pressable>
 
                                 <Pressable
-                                    className="flex-1 bg-indigo-600 rounded-2xl py-4"
+                                    className="flex-1 bg-blue-600 rounded-2xl py-4"
                                     onPress={async () => mutation.mutate({
                                         session,
                                         sequence: sequence as string,
@@ -381,7 +381,7 @@ export default function BookingSummary() {
                                     })}
                                     style={({ pressed }) => ({
                                         backgroundColor: pressed ? '#4338ca' : '#4f46e5',
-                                        shadowColor: '#6366f1',
+                                        shadowColor: '#63a2ffff',
                                         shadowOffset: { width: 0, height: 4 },
                                         shadowOpacity: pressed ? 0.2 : 0.3,
                                         shadowRadius: 8,

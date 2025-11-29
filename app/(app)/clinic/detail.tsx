@@ -32,7 +32,7 @@ export default function ClinicDetailScreen() {
             <Stack.Screen options={{ title: 'ClinicList', headerShown: false }} />
             <GradientBackground>
                 <ScrollView>
-                    <View className="flex flex-1 mt-10 p-6">
+                    <View className="flex flex-1 mt-10 p-3">
                         <View className="mt-10 rounded-xl border border-blue-200 bg-slate-50 p-4">
                             <View>
                                 <View className="flex-row items-start mb-5">
@@ -69,8 +69,17 @@ export default function ClinicDetailScreen() {
                                     </View>
                                 </View>
 
+                                <View className="mt-2">
+                                    <ImageCarousel
+                                        divideBy={1.17}
+                                        images={data.images}
+                                        noBorder={true}
+                                    />
+                                    <Text className="ms-4 mt-4 text-sm text-slate-700">{data.vision}</Text>
+                                </View>
+
                                 <View className="mb-4">
-                                    <Text className="text-sm text-gray-600">
+                                    <Text className="my-2 ms-1 text-xs text-slate-700">
                                         Alamat:
                                     </Text>
                                 </View>
@@ -79,6 +88,7 @@ export default function ClinicDetailScreen() {
                                     <Ionicons name="location" size={16} color="#b6b6b6ff" />
                                     <Text className="text-gray-600 text-sm font-light ml-2 flex-1">{data?.adress}</Text>
                                 </View>
+
 
                                 <View>{data.schedules ? <View className="mt-5 flex">
                                     <Text className="my-2 ms-1 text-xs text-slate-700">Jadwal Buka</Text>
@@ -96,16 +106,8 @@ export default function ClinicDetailScreen() {
                             </View>
 
                         </View>
-
-                        <View className="mt-3 rounded-xl border border-blue-200 bg-blue-50 p-2">
-                            <ImageCarousel
-                                divideBy={1.17}
-                                images={data.images}
-                            />
-                            <Text className="ms-4 mt-4 text-sm text-slate-700">{data.vision}</Text>
-                        </View>
-                        <Text className="ms-2 mt-8 text-sm text-slate-700">Pilih Layanan</Text>
-                        <View className="mx-5 mt-3">
+                        <Text className="ms-2 mt-5 text-sm text-slate-700">Pilih Layanan</Text>
+                        <View className="mx-2 mt-3">
                             <SimpleGrid
                                 data={data.polyclinics}
                                 listKey=""

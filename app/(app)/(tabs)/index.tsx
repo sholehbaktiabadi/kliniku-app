@@ -102,7 +102,7 @@ export default function Index() {
                   >
                     <Card
                       title={item.name}
-                      image={item.images[0]}
+                      image={item.imageProfile}
                       tags={item.polyclinics}
                       rating={item.rating}
                     />

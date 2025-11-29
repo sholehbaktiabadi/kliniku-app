@@ -1,4 +1,3 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ScrollView, View, Text, Image, Linking, Alert, Pressable } from 'react-native';
@@ -59,7 +58,7 @@ export default function QueueScreen() {
             <Stack.Screen options={{ title: 'QueueDetail', headerShown: false }} />
             <GradientBackground>
                 <ScrollView>
-                    <View className="flex flex-1 mt-10 p-6">
+                    <View className="flex flex-1 mt-10 p-3">
 
 
                         <View className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-4">
@@ -87,18 +86,15 @@ export default function QueueScreen() {
                                     </View>
 
                                     <View className="flex-row space-x-2">
-                                        {/* <View className="bg-blue-50 rounded-lg px-3 py-1">
-                                            <Text className="text-blue-700 text-xs font-medium">24 Jam</Text>
-                                        </View> */}
-                                        <View className="bg-green-50 rounded-lg px-3 py-1">
-                                            <Text className="text-green-700 text-xs font-medium">Tersedia</Text>
+                                        <View className="bg-blue-100 rounded-lg px-3 py-1">
+                                            <Text className="text-gray-600 text-md font-light">{data.poly?.name}</Text>
                                         </View>
                                     </View>
                                 </View>
                             </View>
 
                             <View className="flex-row justify-between items-center mb-4">
-                                <Text className="text-sm text-gray-600">
+                                <Text className="my-2 ms-1 text-xs text-slate-700">
                                     Alamat:
                                 </Text>
 
@@ -109,10 +105,10 @@ export default function QueueScreen() {
                                         data.clinic?.lon,
                                         data.clinic?.name
                                     )}
-                                    className="flex-row items-center bg-blue-500 rounded-lg px-4 py-2"
+                                    className="flex-row items-center bg-blue-500 rounded-lg px-8 py-2"
                                 >
                                     <Ionicons name="navigate" size={16} color="white" />
-                                    <Text className="text-white text-sm font-medium ml-2">Directions</Text>
+                                    <Text className="text-white text-sm font-medium ml-2">Buka Maps</Text>
                                 </Pressable>
                             </View>
 
@@ -123,18 +119,17 @@ export default function QueueScreen() {
                         </View>
 
 
-
-                        <View className="mt-10">
+                        <View className="mt-5 px-3">
                             <Text className="text-lg font-bold text-gray-600 mb-4">
                                 Realtime Antrian
                             </Text>
                             <QueueBoard polyClinicId={id} queues={eventData.queues} />
-                        </View>
-                        <View className="my-5">
-                            <QueueRegistered
-                                totalRegistrant={data.totalRegistrant}
-                                userCurrentQueue={data.userQueue?.sequence}
-                            />
+                            <View className="my-5">
+                                <QueueRegistered
+                                    totalRegistrant={data.totalRegistrant}
+                                    userCurrentQueue={data.userQueue?.sequence}
+                                />
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
