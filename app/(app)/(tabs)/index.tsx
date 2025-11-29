@@ -68,9 +68,9 @@ export default function Index() {
               >
                 <View className="flex-row space-x-4">
                   {healthTips.map((tip, index) => (
-                    <View key={index} className="bg-white rounded-2xl p-4 w-64 shadow-sm shadow-gray-200 border border-gray-100">
+                    <View key={index} className="bg-white rounded-2xl p-4 mx-1 w-64 shadow-sm shadow-gray-200 border border-gray-100">
                       <View className="w-12 h-12 bg-blue-100 rounded-lg items-center justify-center mb-3">
-                        <Ionicons name={tip.icon} size={24} color="#2b7fff" />
+                        <Ionicons name={tip.icon as React.ComponentProps<typeof Ionicons>['name']} size={24} color="#2b7fff" />
                       </View>
                       <Text className="text-gray-800 font-semibold text-sm mb-2">
                         {tip.title}

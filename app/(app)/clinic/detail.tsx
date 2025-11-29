@@ -33,7 +33,7 @@ export default function ClinicDetailScreen() {
             <GradientBackground>
                 <ScrollView>
                     <View className="flex flex-1 mt-10 p-3">
-                        <View className="mt-10 rounded-xl border border-blue-200 bg-slate-50 p-4">
+                        <View className="mt-10 rounded-xl border border-blue-50 bg-white shadow shadow-xs shadow-blue-200 p-4">
                             <View>
                                 <View className="flex-row items-start mb-5">
                                     {/* Left - Image & Rating */}
