@@ -61,7 +61,7 @@ export default function QueueScreen() {
                     <View className="flex flex-1 mt-10 p-3">
 
 
-                        <View className="mt-10 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                        <View className="mt-10 rounded-xl border border-blue-50 bg-slate-50 shadow shadow-xs shadow-blue-200 p-4">
                             <View className="flex-row items-start mb-5">
                                 {/* Left - Image & Rating */}
                                 <View className="relative">
@@ -80,16 +80,17 @@ export default function QueueScreen() {
                                         <Text className="text-lg font-bold text-gray-800 mr-2">{data.clinic?.name}</Text>
                                     </View>
 
-                                    <View className="flex-row items-start mb-3">
-                                        <Ionicons name="star-half" size={16} color="#F59E0B" />
-                                        <Text className="text-amber-800 font-bold ml-1">{data.clinic?.rating}</Text>
-                                    </View>
-
-                                    <View className="flex-row space-x-2">
-                                        <View className="bg-blue-100 rounded-lg px-3 py-1">
-                                            <Text className="text-gray-600 text-md font-light">{data.poly?.name}</Text>
+                                    <View className="flex-row space-x-2 mb-2">
+                                        <View className="border border-slate-200 rounded-lg px-5 py-1">
+                                            <Text className="text-gray-500">{data.poly?.name}</Text>
                                         </View>
                                     </View>
+
+                                    <View className="flex-row space-x-2 mb-2">
+                                        <View className="bg-green-100 rounded-lg px-3 py-1">
+                                            <Text className="text-gray-600 text-sm font-light">{data.doctor}</Text>
+                                        </View>
+                                    </View>                                    
                                 </View>
                             </View>
 
