@@ -58,7 +58,7 @@ export default function Index() {
 
 
             <View className="pb-5">
-              <Text className="text-lg font-bold text-gray-800 mb-4">
+              <Text className="text-lg font-bold text-gray-500 mb-4">
                 Tips Kesehatan
               </Text>
               <ScrollView
@@ -72,7 +72,7 @@ export default function Index() {
                       <View className="w-12 h-12 bg-blue-100 rounded-lg items-center justify-center mb-3">
                         <Ionicons name={tip.icon as React.ComponentProps<typeof Ionicons>['name']} size={24} color="#2b7fff" />
                       </View>
-                      <Text className="text-gray-800 font-semibold text-sm mb-2">
+                      <Text className="text-gray-500 font-semibold text-sm mb-2">
                         {tip.title}
                       </Text>
                       <Text className="text-gray-500 text-xs leading-5">
@@ -85,7 +85,7 @@ export default function Index() {
             </View>
 
             <View className="pb-5">
-              <Text className="text-lg font-bold text-gray-800 mb-4">
+              <Text className="text-lg font-bold text-gray-500 mb-4">
                 Klinik Terdekat
               </Text>
 

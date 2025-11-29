@@ -16,7 +16,7 @@ export const MainMenu = () => {
       itemDimension={60}
       renderItem={({ item }) => (
         <View className="items-center bg-white rounded-xl shadow p-2">
-          <Ionicons name={item.name as React.ComponentProps<typeof Ionicons>['name']} size={30} color="#63a2ffff" />
+          <Ionicons name={item.name as React.ComponentProps<typeof Ionicons>['name']} size={30} color="#2c80ffff" />
           <Text className="text-xs text-slate-400 mt-1">{item.label}</Text>
         </View>
       )}
