@@ -2,7 +2,7 @@ import { View, Text } from 'react-native';
 
 enum QueueColor {
   EMPTY = 'border border-slate-300',
-  BOOKED = 'bg-indigo-100',
+  BOOKED = 'bg-blue-200',
   SKIPPED = 'border border-indigo-200',
   ON_GOING = 'bg-emerald-500',
   COMPLETED = 'bg-cyan-600',

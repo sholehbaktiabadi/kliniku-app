@@ -1,0 +1,21 @@
+    {
+        "build": {
+            "preview": {
+                "android": {
+                    "buildType": "apk"
+                },
+                "env": {
+                    "KLINIKU_API_URL": "http://192.168.0.194:3009",
+                    "EXPO_PUBLIC_KLINIKU_API_URL": "http://192.168.0.194:3009"
+                }
+            },
+            "production": {
+                "android": {
+                    "buildType": "app-bundle"
+                },
+                "ios": {
+                    "simulator": false
+                }
+            }
+        }
+    }

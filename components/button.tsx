@@ -16,14 +16,14 @@ export const PrimaryButton: React.FC<PrimaryButtonProps> = ({
     variant = 'primary'
 }) => {
     const getButtonStyle = () => {
-        const baseStyle = "mt-5 items-center rounded-xl border shadow shadow-slate-700 w-[70%]";
+        const baseStyle = "mt-5 items-center rounded-xl border w-[70%]";
         if (disabled) {
-            return `${baseStyle} border-white bg-white opacity-55`;
+            return `${baseStyle} border-0 bg-white opacity-40`;
         }
         if (variant === 'primary') {
-            return `${baseStyle} border-blue-400 bg-blue-400`;
+            return `${baseStyle} shadow shadow-slate-700 border-blue-400 bg-blue-400`;
         } else {
-            return `${baseStyle} border-blue-500 bg-white`;
+            return `${baseStyle} shadow shadow-slate-700 border-blue-500 bg-white`;
         }
     };
 

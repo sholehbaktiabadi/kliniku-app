@@ -2,12 +2,12 @@
   "expo": {
     "name": "kliniku",
     "slug": "kliniku",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "scheme": "kliniku",
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/app_icon.png"
     },
     "plugins": [
       "expo-router",
@@ -34,7 +34,7 @@
     "android": {
       "backgroundColor": "#444444",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/app_icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.sholehbaktiabadi.kliniku"

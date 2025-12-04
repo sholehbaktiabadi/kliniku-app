@@ -81,8 +81,8 @@ export default function QueueScreen() {
                                     </View>
 
                                     <View className="flex-row space-x-2 mb-2">
-                                        <View className="border border-slate-200 rounded-lg px-5 py-1">
-                                            <Text className="text-gray-500">{data.poly?.name}</Text>
+                                        <View className="border border-blue-200 rounded-lg px-5 py-1">
+                                            <Text className="text-blue-600">{data.poly?.name}</Text>
                                         </View>
                                     </View>
 
