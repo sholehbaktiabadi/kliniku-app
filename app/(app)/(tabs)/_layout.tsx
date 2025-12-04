@@ -5,14 +5,14 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#95bfffff'
+        tabBarActiveTintColor: '#2b7fff'
       }}>
       <Tabs.Screen
         name="index"
         options={{
           title: 'Homes',
           headerShown: false,
-          tabBarIcon: ({ }) => <TabBarIcon name="home" color={"#95bfffff"} />,
+          tabBarIcon: ({ }) => <TabBarIcon name="home" color={"#2b7fff"} />,
         }}
       />
       <Tabs.Screen
@@ -20,7 +20,7 @@ export default function TabLayout() {
         options={{
           title: 'Booking',
           headerShown: true,
-          tabBarIcon: ({ }) => <TabBarIcon name="book" color={"#95bfffff"} />,
+          tabBarIcon: ({ }) => <TabBarIcon name="book" color={"#2b7fff"} />,
         }}
       />
       <Tabs.Screen
@@ -28,7 +28,7 @@ export default function TabLayout() {
         options={{
           title: 'User',
           headerShown: true,
-          tabBarIcon: ({ }) => <TabBarIcon name="user" color={"#95bfffff"} />,
+          tabBarIcon: ({ }) => <TabBarIcon name="user" color={"#2b7fff"} />,
         }}
       />
     </Tabs>

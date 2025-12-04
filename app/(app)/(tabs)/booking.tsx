@@ -3,25 +3,26 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useQuery } from '@tanstack/react-query';
 import { getTransactionHistory } from '~/api/transaction';
 import { useSession } from '~/middleware/middleware';
+import { router } from 'expo-router';
 
 export default function Book() {
-  const { session, refreshToken } = useSession()
+  const { session } = useSession()
   const initialData = {
     message: [],
   }
-  
+
   const { data, isLoading, isError } = useQuery({
     queryKey: ['transactionHistory'],
     queryFn: () => getTransactionHistory({ session }),
     initialData: initialData,
   });
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     switch (status) {
       case 'WAITING':
         return { text: 'text-blue-800', border: 'border-blue-200' };
       case 'PAID':
-        return {  text: 'text-green-800', border: 'border-green-200' };
+        return { text: 'text-green-800', border: 'border-green-200' };
     }
   };
 
@@ -62,14 +63,20 @@ export default function Book() {
 
   return (
     <ScrollView className="flex-1 px-4 py-2 bg-gray-50">
-      
+
       {data.message.map((transaction) => {
         const status = getStatusColor(transaction.payment_status);
-        
+
         return (
           <Pressable
             key={transaction.id}
             className={`mb-4 rounded-2xl border-2 ${status.border} bg-white p-5 shadow-sm`}
+            onPress={() =>
+              router.push({
+                pathname: '/(app)/polyclinic/detail',
+                params: { id: transaction?.polyClinic?.id },
+              })
+            }
           >
             {/* Header - Invoice & Status */}
             <View className="flex-row justify-between items-start mb-4">
