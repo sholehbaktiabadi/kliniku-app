@@ -12,7 +12,7 @@ export const ImageCarousel = ({ images, divideBy, noBorder }: { images: string[]
         loop
         width={width / divideBy}
         height={width / 2}
-        autoPlay={true}
+        autoPlay={false}
         data={images}
         scrollAnimationDuration={3000}
         renderItem={({ index, item }) => (

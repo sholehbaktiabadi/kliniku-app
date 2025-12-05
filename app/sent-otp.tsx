@@ -64,14 +64,33 @@ export default function SentOtp() {
                             }
                             }
                         />
-                        <View className="items-center">
+                        <View className={`items-center ${activeButton ? "" : "hidden"}`}>
                             <PrimaryButton
                                 title={mutation.isPending ? "Mengirim..." : "Sent OTP code"}
-                                onPress={() => mutation.mutate({ phone })}
+                                onPress={() => mutation.mutate({ phone, opt: "LOGIN" })}
                                 disabled={!activeButton}
                                 loading={mutation.isPending}
                                 variant={"secondary"}
                             />
+                        </View>
+                        <View className='my-5 flex-row items-center justify-center'>
+                            <View>
+                                <Text className='mx-1 text-white text-sm font-light'>Belum Punya akun ?</Text>
+                            </View>
+                            <View>
+                                <Pressable
+                                    onPress={() => {
+                                        {
+                                            router.push({
+                                                pathname: '/register',
+                                                params: { phone },
+                                            });
+                                        }
+                                    }}
+                                >
+                                    <Text className='mx-1 text-blue-600 text-sm font-extralight'>Daftar</Text>
+                                </Pressable>
+                            </View>
                         </View>
                     </View>
                     <View className="absolute bottom-0 w-full">

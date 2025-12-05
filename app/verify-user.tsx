@@ -5,17 +5,17 @@ import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
 import { useSession } from '~/middleware/middleware';
 import { useMutation } from '@tanstack/react-query';
-import { login } from '~/api/auth';
+import { register } from '~/api/auth';
 import { Response } from '~/interface/response';
 import { AxiosError } from 'axios';
 import { AuthBackground } from '~/components/background';
 
-export default function Login() {
+export default function VerifyUser() {
   const { signIn } = useSession()
-  const { phone } = useLocalSearchParams();
+  const { name, phone, ktp } = useLocalSearchParams<{name: string, phone: string, ktp: string}>();
 
   const mutation = useMutation({
-    mutationFn: login,
+    mutationFn: register,
     onSuccess: (data: Response) => {
       signIn(data.message.token, data.message.refreshToken)
     },
@@ -40,7 +40,7 @@ export default function Login() {
   };
 
   const handleChangeNumber = async () => {
-    router.replace('/sent-otp');
+    router.replace('/register');
   };
 
   return (
@@ -53,7 +53,7 @@ export default function Login() {
         >
           <View style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
             <Text className='text-white mb-1 text-2xl font-bold'>
-              Masukan Kode OTP
+              Masukan Kode Registrasi
             </Text>
             <Text className='text-white font-light'>
               Anda akan di arahkan ke halaman home
@@ -76,8 +76,8 @@ export default function Login() {
                   disabled={mutation.isPending}
                   focusColor="#2b7fff"
                   textProps={{ style: { color: "white" } }}
-                  onFilled={(text) => {
-                    mutation.mutate({ phone: phone as string, otp: text })
+                  onFilled={(otp) => {
+                    mutation.mutate({ name, phone, ktp, otp, registerOpt: "APP"})
                   }}
                 />
               </View>
