@@ -1,17 +1,18 @@
 import { Dimensions, Image, View, StyleSheet } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 
-export const ImageCarousel = ({ images }: { images: string[] }) => {
+export const ImageCarousel = ({ images, divideBy, noBorder }: { images: string[], divideBy: number, noBorder?: boolean }) => {
   const { width } = Dimensions.get('window');
+  
 
   return (
     <View className="items-center">
       <Carousel
-        style={{ borderRadius: 10 }}
+        style={{ borderRadius: noBorder ? 0 : 10 }}
         loop
-        width={width / 1.1}
+        width={width / divideBy}
         height={width / 2}
-        autoPlay
+        autoPlay={true}
         data={images}
         scrollAnimationDuration={3000}
         renderItem={({ index, item }) => (
@@ -28,6 +29,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 10
+    borderRadius: 0
   }
 });

@@ -17,13 +17,13 @@ export const Card = ({ title, image, tags, rating }: CardProps) => {
         <Text className="text-lg font-sm text-gray-500 mb-2">{title}</Text>
         <View className="flex-row flex-wrap">
           {displayedTags.map((tag, index) => (
-            <View key={index} className="bg-orange-100 px-3 py-1 rounded-full mr-2 mb-2">
-              <Text className="text-orange-800 text-xs">{tag}</Text>
+            <View key={index} className="bg-blue-100 px-3 py-1 rounded-full mr-2 mb-2">
+              <Text className="text-blue-800 text-xs">{tag}</Text>
             </View>
           ))}
           {remainingCount > 0 && (
-            <View className="bg-orange-200 px-3 py-1 rounded-full mr-2 mb-2">
-              <Text className="text-orange-800 text-xs">+{remainingCount} more</Text>
+            <View className="bg-blue-200 px-3 py-1 rounded-full mr-2 mb-2">
+              <Text className="text-blue-800 text-xs">+{remainingCount} more</Text>
             </View>
           )}
         </View>

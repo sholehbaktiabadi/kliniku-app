@@ -1,28 +1,42 @@
-import { useState } from 'react';
-import { View, Text, Alert, Pressable } from 'react-native';
+import { View, Text, Pressable, KeyboardAvoidingView, Platform } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { router, useLocalSearchParams } from 'expo-router';
 import LottieView from 'lottie-react-native';
 import { OtpInput } from "react-native-otp-entry";
-import { LinearGradient } from 'expo-linear-gradient';
 import { useSession } from '~/middleware/middleware';
+import { useMutation } from '@tanstack/react-query';
+import { login } from '~/api/auth';
+import { Response } from '~/interface/response';
+import { AxiosError } from 'axios';
+import { AuthBackground } from '~/components/background';
 
 export default function Login() {
-  const [loading, setLoading] = useState(false);
   const { signIn } = useSession()
   const { phone } = useLocalSearchParams();
 
-  const handleLogin = async (otp: string) => {
-    try {
-      setLoading(true);
-      signIn(phone as string, otp)
-      router.replace("/(app)/(tabs)");
-    } catch (error) {
-      router.replace('/');
-      console.log(error)
-      Alert.alert('Error', 'Login failed');
-    } finally {
-      setLoading(false);
+  const mutation = useMutation({
+    mutationFn: login,
+    onSuccess: (data: Response) => {
+      signIn(data.message.token, data.message.refreshToken)
+    },
+    onError: (error: any) => {
+      if (error instanceof AxiosError) {
+        console.log(error.response)
+        const { message }: Response = error.response?.data
+        console.log("Backend error:", error.response?.data);
+        showToast(message);
+      } else {
+        showToast('an unexpected error occurred');
+      }
     }
+  })
+
+  const showToast = (err: string) => {
+    Toast.show({
+      type: "error",
+      text1: 'Error',
+      text2: err,
+    });
   };
 
   const handleChangeNumber = async () => {
@@ -31,53 +45,57 @@ export default function Login() {
 
   return (
     <>
-      <LinearGradient
-        colors={['#ff792cff', '#ffb387ff', '#ffd5bcff', '#fff5f0ff']}
-        locations={[0.1, 0.39, 0.4, 1]}
-        className="absolute top-0 left-0 right-0 bottom-0"
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-      >
-        <View
-          style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
-          <Text className='text-white mb-20 text-center text-3xl font-sans'>
-            Masukan Kode Otp
-          </Text>
-          <View className='items-center'>
-            <LottieView
-              autoPlay
-              speed={0.5}
-              style={{
-                width: 400,
-                height: 200
-              }}
-              source={require("../assets/lottie/otp-verification.json")}
-            />
-            <View className='mx-[20%]'>
-              <OtpInput
-                numberOfDigits={4}
-                disabled={loading}
-                onTextChange={(text) => console.log(text)}
-                focusColor="white"
-                onFilled={(text) => {
-                  handleLogin(text)
-                }}
-              />
-            </View>
-            <Text className="text-gray-600 mt-10 text-center text-sm font-extralight">
-              Kode sudah dikirim ke whatsapp {phone}
-            </Text>
-            <Pressable
-              // className="mt-8 items-center rounded-xl border border-indigo-400 bg-indigo-400 shadow shadow-slate-700 w-[80%]"
-              onPress={async () => await handleChangeNumber()}
-            >
-              <Text className="text-blue-600 text-center text-sm font-extralight">
-                Ubah Nomor telephone
+      <AuthBackground>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+        >
+          <View style={{ flex: 1, justifyContent: 'center', padding: 40 }}>
+                        <Text className='text-white mb-1 text-2xl font-bold'>
+                            Masukan Kode OTP
+                        </Text>
+                        <Text className='text-white font-light'>
+                            Anda akan di arahkan ke ahalaman home
+                        </Text>
+            <View className='items-center'>
+              <View className='mb-8'>
+                <LottieView
+                  autoPlay
+                  speed={0.6}
+                  style={{
+                    width: 250,
+                    height: 250
+                  }}
+                  source={require("../assets/lottie/otp-verification-v2.json")}
+                />
+              </View>
+              <View className='mx-10'>
+                <OtpInput
+                  numberOfDigits={4}
+                  disabled={mutation.isPending}
+                  focusColor="#2b7fff"
+                  textProps={{ style : { color: "white" } }}
+                  onFilled={(text) => {
+                    mutation.mutate({ phone: phone as string, otp: text })
+                  }}
+                />
+              </View>
+              <Text className="text-white mt-10 text-center text-sm font-light">
+                Kode otp sudah dikirim ke whatsapp {phone}
               </Text>
-            </Pressable>
+              <Pressable
+                onPress={async () => await handleChangeNumber()}
+              >
+                <Text className="text-blue-600 text-center text-sm font-extralight">
+                  Ubah Nomor telephone
+                </Text>
+              </Pressable>
+            </View>
           </View>
-        </View>
-      </LinearGradient>
+          <Toast />
+        </KeyboardAvoidingView>
+      </AuthBackground>
     </>
   );
 }
